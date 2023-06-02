@@ -11,11 +11,4 @@ class SearchPhotos{
     total_pages = json['total_page'];
     results = List<PhotoHome>.from(json['results'].map((x) => PhotoHome.fromJson(x)));
   }
-
-  Map<String, dynamic>? toJson(){
-    final Map<String, dynamic> data = {};
-    data['total'] = total;
-    data['total_page'] = total_pages;
-    data['result'] = new List<dynamic>.from(results!.map((x) => x.toJson()));
-  }
 }

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-List<PhotoHome> pinterestFromJson(String str) => List.from(jsonDecode(str).map((e) => PhotoHome.fromJson(e)));
-
-String unSplashToJson(List<PhotoHome> data) => jsonEncode(List.from(data.map((e) => e.toJson())));
-
 class PhotoHome {
-  String? id;
+  static List<PhotoHome> photoHomeListFromJson(String str) =>
+      List.from(jsonDecode(str).map((e) => PhotoHome.fromJson(e)));
+
+  String id;
   String? createdAt;
   String? updatedAt;
   String? promotedAt;
@@ -25,100 +24,68 @@ class PhotoHome {
   TopicSubmissions? topicSubmissions;
   User? user;
 
-  PhotoHome(
-      {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.promotedAt,
-        this.width,
-        this.height,
-        this.color,
-        this.blurHash,
-        this.description,
-        this.altDescription,
-        this.urls,
-        this.links,
-        this.categories,
-        this.likes,
-        this.likedByUser,
-        this.currentUserCollections,
-        this.sponsorship,
-        this.topicSubmissions,
-        this.user});
+  PhotoHome({
+    required this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.promotedAt,
+    this.width,
+    this.height,
+    this.color,
+    this.blurHash,
+    this.description,
+    this.altDescription,
+    this.urls,
+    this.links,
+    this.categories,
+    this.likes,
+    this.likedByUser,
+    this.currentUserCollections,
+    this.sponsorship,
+    this.topicSubmissions,
+    this.user,
+  });
 
-  PhotoHome.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    promotedAt = json['promoted_at'];
-    width = json['width'];
-    height = json['height'];
-    color = json['color'];
-    blurHash = json['blur_hash'];
-    description = json['description'];
-    altDescription = json['alt_description'];
-    urls = json['urls'] != null ? Urls.fromJson(json['urls']) : null;
-    links = json['links'] != null ? Links.fromJson(json['links']) : null;
-    if (json['categories'] != null) {
-      categories = [];
-      json['categories'].forEach((v) {
-        categories!.add(v);
-      });
+  factory PhotoHome.fromJson(Map<String, dynamic> json) {
+    List categories = [];
+    List currentUserCollections = [];
+    if (json['categories'] is List) {
+      List res = json['categories'] as List;
+      for (var category in res) {
+        categories.add(category);
+      }
     }
-    likes = json['likes'];
-    likedByUser = json['liked_by_user'];
-    if (json['current_user_collections'] != null) {
-      currentUserCollections = [];
-      json['current_user_collections'].forEach((v) {
-        currentUserCollections!.add(v);
-      });
-    }
-    sponsorship = json['sponsorship'] != null
-        ? Sponsorship.fromJson(json['sponsorship'])
-        : null;
-    topicSubmissions = json['topic_submissions'] != null
-        ? TopicSubmissions.fromJson(json['topic_submissions'])
-        : null;
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
-  }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['promoted_at'] = promotedAt;
-    data['width'] = width;
-    data['height'] = height;
-    data['color'] = color;
-    data['blur_hash'] = blurHash;
-    data['description'] = description;
-    data['alt_description'] = altDescription;
-    if (urls != null) {
-      data['urls'] = urls!.toJson();
+    if (json['current_user_collections'] is List) {
+      List res = json['current_user_collections'] as List;
+      for (var collection in res) {
+        currentUserCollections.add(collection);
+      }
     }
-    if (links != null) {
-      data['links'] = links!.toJson();
-    }
-    if (categories != null) {
-      data['categories'] = categories!.map((v) => v.toJson()).toList();
-    }
-    data['likes'] = likes;
-    data['liked_by_user'] = likedByUser;
-    if (currentUserCollections != null) {
-      data['current_user_collections'] =
-          currentUserCollections!.map((v) => v.toJson()).toList();
-    }
-    if (sponsorship != null) {
-      data['sponsorship'] = sponsorship!.toJson();
-    }
-    if (topicSubmissions != null) {
-      data['topic_submissions'] = topicSubmissions!.toJson();
-    }
-    if (user != null) {
-      data['user'] = user!.toJson();
-    }
-    return data;
+
+    return PhotoHome(
+      id: json['id'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      promotedAt: json['promoted_at'],
+      width: json['width'],
+      height: json['height'],
+      color: json['color'],
+      blurHash: json['blur_hash'],
+      description: json['description'],
+      altDescription: json['alt_description'],
+      urls: json['urls'] != null ? Urls.fromJson(json['urls']) : null,
+      links: json['links'] != null ? Links.fromJson(json['links']) : null,
+      categories: categories,
+      likes: json['likes'],
+      likedByUser: json['liked_by_user'],
+      currentUserCollections: currentUserCollections,
+      sponsorship: json['sponsorship'] != null ? Sponsorship.fromJson(json['sponsorship']) : null,
+      topicSubmissions: json['topic_submissions'] != null
+          ? TopicSubmissions.fromJson(json['topic_submissions'])
+          : null,
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
+    );
   }
 }
 
@@ -130,13 +97,14 @@ class Urls {
   String? thumb;
   String? smallS3;
 
-  Urls(
-      {this.raw,
-        this.full,
-        this.regular,
-        this.small,
-        this.thumb,
-        this.smallS3});
+  Urls({
+    this.raw,
+    this.full,
+    this.regular,
+    this.small,
+    this.thumb,
+    this.smallS3,
+  });
 
   Urls.fromJson(Map<String, dynamic> json) {
     raw = json['raw'];
@@ -146,17 +114,6 @@ class Urls {
     thumb = json['thumb'];
     smallS3 = json['small_s3'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['raw'] = raw;
-    data['full'] = full;
-    data['regular'] = regular;
-    data['small'] = small;
-    data['thumb'] = thumb;
-    data['small_s3'] = smallS3;
-    return data;
-  }
 }
 
 class Links {
@@ -165,22 +122,18 @@ class Links {
   String? download;
   String? downloadLocation;
 
-  Links({this.self, this.html, this.download, this.downloadLocation});
+  Links({
+    this.self,
+    this.html,
+    this.download,
+    this.downloadLocation,
+  });
 
   Links.fromJson(Map<String, dynamic> json) {
     self = json['self'];
     html = json['html'];
     download = json['download'];
     downloadLocation = json['download_location'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['self'] = self;
-    data['html'] = html;
-    data['download'] = download;
-    data['download_location'] = downloadLocation;
-    return data;
   }
 }
 
@@ -190,25 +143,18 @@ class Sponsorship {
   String? taglineUrl;
   Sponsor? sponsor;
 
-  Sponsorship({this.impressionUrls, this.tagline, this.taglineUrl, this.sponsor});
+  Sponsorship({
+    this.impressionUrls,
+    this.tagline,
+    this.taglineUrl,
+    this.sponsor,
+  });
 
   Sponsorship.fromJson(Map<String, dynamic> json) {
     impressionUrls = json['impression_urls'].cast<String>();
     tagline = json['tagline'];
     taglineUrl = json['tagline_url'];
-    sponsor =
-    json['sponsor'] != null ? Sponsor.fromJson(json['sponsor']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['impression_urls'] = impressionUrls;
-    data['tagline'] = tagline;
-    data['tagline_url'] = taglineUrl;
-    if (sponsor != null) {
-      data['sponsor'] = sponsor!.toJson();
-    }
-    return data;
+    sponsor = json['sponsor'] != null ? Sponsor.fromJson(json['sponsor']) : null;
   }
 }
 
@@ -233,26 +179,27 @@ class Sponsor {
   bool? forHire;
   Social? social;
 
-  Sponsor(
-      {this.id,
-        this.updatedAt,
-        this.username,
-        this.name,
-        this.firstName,
-        this.lastName,
-        this.twitterUsername,
-        this.portfolioUrl,
-        this.bio,
-        this.location,
-        this.userLinks,
-        this.profileImage,
-        this.instagramUsername,
-        this.totalCollections,
-        this.totalLikes,
-        this.totalPhotos,
-        this.acceptedTos,
-        this.forHire,
-        this.social});
+  Sponsor({
+    this.id,
+    this.updatedAt,
+    this.username,
+    this.name,
+    this.firstName,
+    this.lastName,
+    this.twitterUsername,
+    this.portfolioUrl,
+    this.bio,
+    this.location,
+    this.userLinks,
+    this.profileImage,
+    this.instagramUsername,
+    this.totalCollections,
+    this.totalLikes,
+    this.totalPhotos,
+    this.acceptedTos,
+    this.forHire,
+    this.social,
+  });
 
   Sponsor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -476,26 +423,27 @@ class User {
   bool? forHire;
   Social? social;
 
-  User(
-      {this.id,
-        this.updatedAt,
-        this.username,
-        this.name,
-        this.firstName,
-        this.lastName,
-        this.twitterUsername,
-        this.portfolioUrl,
-        this.bio,
-        this.location,
-        this.links,
-        this.profileImage,
-        this.instagramUsername,
-        this.totalCollections,
-        this.totalLikes,
-        this.totalPhotos,
-        this.acceptedTos,
-        this.forHire,
-        this.social});
+  User({
+    this.id,
+    this.updatedAt,
+    this.username,
+    this.name,
+    this.firstName,
+    this.lastName,
+    this.twitterUsername,
+    this.portfolioUrl,
+    this.bio,
+    this.location,
+    this.links,
+    this.profileImage,
+    this.instagramUsername,
+    this.totalCollections,
+    this.totalLikes,
+    this.totalPhotos,
+    this.acceptedTos,
+    this.forHire,
+    this.social,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -520,35 +468,5 @@ class User {
     forHire = json['for_hire'];
     social =
     json['social'] != null ? Social.fromJson(json['social']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['updated_at'] = updatedAt;
-    data['username'] = username;
-    data['name'] = name;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
-    data['twitter_username'] = twitterUsername;
-    data['portfolio_url'] = portfolioUrl;
-    data['bio'] = bio;
-    data['location'] = location;
-    if (links != null) {
-      data['links'] = links!.toJson();
-    }
-    if (profileImage != null) {
-      data['profile_image'] = profileImage!.toJson();
-    }
-    data['instagram_username'] = instagramUsername;
-    data['total_collections'] = totalCollections;
-    data['total_likes'] = totalLikes;
-    data['total_photos'] = totalPhotos;
-    data['accepted_tos'] = acceptedTos;
-    data['for_hire'] = forHire;
-    if (social != null) {
-      data['social'] = social!.toJson();
-    }
-    return data;
   }
 }

@@ -19,38 +19,39 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    viewModel.apiPhotoList(1);
     super.initState();
-    viewModel.apiPhotoList(page);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:ChangeNotifierProvider(
-        create: (context) => viewModel,
-        child: Consumer<MainViewModel>(
-          builder: (ctx, model, index) => Stack(
-            children: [
-              MasonryGridView.builder(
-                padding: EdgeInsets.only(right: 5, left: 5),
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemCount: viewModel.items.length,
-                itemBuilder: (ctx, i) {
-                  return itemOfPhotos(viewModel.items[i], ctx);
-                },
-                gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+      body:SafeArea(
+        child: ChangeNotifierProvider(
+          create: (context) => viewModel,
+          child: Consumer<MainViewModel>(
+            builder: (ctx, model, index) => Stack(
+              children: [
+                MasonryGridView.builder(
+                  padding: EdgeInsets.only(right: 5, left: 5),
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: viewModel.items.length,
+                  itemBuilder: (ctx, i) {
+                    return itemOfPhotos(viewModel.items[i], ctx);
+                  },
+                  gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
                 ),
-              ),
 
-              viewModel.isLoading
-                  ? Center(
-                child: CircularProgressIndicator(),
-              )
-                  : SizedBox.shrink(),
-            ],
+                viewModel.isLoading
+                    ? Center(
+                  child: CircularProgressIndicator(),
+                )
+                    : SizedBox.shrink(),
+              ],
+            ),
           ),
         ),
       )

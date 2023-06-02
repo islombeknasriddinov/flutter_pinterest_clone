@@ -12,10 +12,4 @@ class SearchUsers{
     results = List<PhotoHome>.from(json['results'].map((x) => PhotoHome.fromJson(x))).toList();
   }
 
-  Map<String, dynamic>? toJson(){
-    final Map<String, dynamic> data = {};
-    data['total'] = total;
-    data['total_page'] = total_pages;
-    data['result'] = new List<dynamic>.from(results!.map((x) => x.toJson()));
-  }
 }

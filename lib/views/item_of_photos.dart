@@ -4,28 +4,21 @@ import '../model/photohome_model.dart';
 
 Widget itemOfPhotos(PhotoHome photoHome, BuildContext context){
   return Container(
-    margin: EdgeInsets.all(2.5),
+    margin: const EdgeInsets.all(2.5),
     child: Column(
       children: [
-        SizedBox(
-          height: 8,
-        ),
+        const SizedBox(height: 8),
         GestureDetector(
           child: ClipRRect(
               borderRadius: BorderRadius.circular(18.0),
               child: CachedNetworkImage(
-                placeholder: (context, url) =>
-                    Image.asset("assets/images/notFound.jpg"),
+                placeholder: (context, url) => Image.asset("assets/images/notFound.jpg"),
                 imageUrl: photoHome.urls!.smallS3!,
-                errorWidget: (context, url, error) =>
-                    Image.asset("assets/images/notFound.jpg"),
+                errorWidget: (context, url, error) => Image.asset("assets/images/notFound.jpg"),
               )),
-          onTap: (){
-          },
+          onTap: () {},
         ),
-        SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -33,9 +26,9 @@ Widget itemOfPhotos(PhotoHome photoHome, BuildContext context){
               children: [
                 photoHome.description != null
                     ? SizedBox(
-                    width: 140,
-                    child: Text(
-                      photoHome.description!,
+                        width: 140,
+                        child: Text(
+                          photoHome.description!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ))

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/pages/home_page.dart';
-import 'package:flutter_pinterestclone/pages/main_page.dart';
+import 'package:flutter_pinterestclone/screen/home_page.dart';
+import 'package:flutter_pinterestclone/screen/main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,6 +8,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,11 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),
-      routes: {
-        HomePage.id: (context) => HomePage(),
-        MainPage.id: (context) => MainPage()
-      },
+      routes: {HomePage.id: (context) => HomePage(), MainPage.id: (context) => MainPage()},
     );
   }
 }
-

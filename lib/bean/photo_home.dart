@@ -1,8 +1,13 @@
 import 'dart:convert';
 
 class PhotoHome {
-  static List<PhotoHome> photoHomeListFromJson(String str) =>
-      List.from(jsonDecode(str).map((e) => PhotoHome.fromJson(e)));
+  static List<PhotoHome> photoHomeListFromJson(String str) {
+    if (str.isNotEmpty) {
+      return List.from(jsonDecode(str).map((e) => PhotoHome.fromJson(e)));
+    } else {
+      return [];
+    }
+  }
 
   String id;
   String? createdAt;
@@ -213,17 +218,15 @@ class Sponsor {
     bio = json['bio'];
     location = json['location'];
     userLinks = json['links'] != null ? UserLinks.fromJson(json['links']) : null;
-    profileImage = json['profile_image'] != null
-        ? ProfileImage.fromJson(json['profile_image'])
-        : null;
+    profileImage =
+        json['profile_image'] != null ? ProfileImage.fromJson(json['profile_image']) : null;
     instagramUsername = json['instagram_username'];
     totalCollections = json['total_collections'];
     totalLikes = json['total_likes'];
     totalPhotos = json['total_photos'];
     acceptedTos = json['accepted_tos'];
     forHire = json['for_hire'];
-    social =
-    json['social'] != null ? Social.fromJson(json['social']) : null;
+    social = json['social'] != null ? Social.fromJson(json['social']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -268,12 +271,12 @@ class UserLinks {
 
   UserLinks(
       {this.self,
-        this.html,
-        this.photos,
-        this.likes,
-        this.portfolio,
-        this.following,
-        this.followers});
+      this.html,
+      this.photos,
+      this.likes,
+      this.portfolio,
+      this.following,
+      this.followers});
 
   UserLinks.fromJson(Map<String, dynamic> json) {
     self = json['self'];
@@ -326,11 +329,7 @@ class Social {
   String? twitterUsername;
   String? paypalEmail;
 
-  Social(
-      {this.instagramUsername,
-        this.portfolioUrl,
-        this.twitterUsername,
-        this.paypalEmail});
+  Social({this.instagramUsername, this.portfolioUrl, this.twitterUsername, this.paypalEmail});
 
   Social.fromJson(Map<String, dynamic> json) {
     instagramUsername = json['instagram_username'];
@@ -357,12 +356,8 @@ class TopicSubmissions {
   TopicSubmissions({this.interiors, this.businessWork, this.architectureInterior});
 
   TopicSubmissions.fromJson(Map<String, dynamic> json) {
-    interiors = json['interiors'] != null
-        ? Interiors.fromJson(json['interiors'])
-        : null;
-    businessWork = json['business-work'] != null
-        ? Interiors.fromJson(json['business-work'])
-        : null;
+    interiors = json['interiors'] != null ? Interiors.fromJson(json['interiors']) : null;
+    businessWork = json['business-work'] != null ? Interiors.fromJson(json['business-work']) : null;
     architectureInterior = json['architecture-interior'] != null
         ? Interiors.fromJson(json['architecture-interior'])
         : null;
@@ -457,16 +452,14 @@ class User {
     bio = json['bio'];
     location = json['location'];
     links = json['links'] != null ? Links.fromJson(json['links']) : null;
-    profileImage = json['profile_image'] != null
-        ? ProfileImage.fromJson(json['profile_image'])
-        : null;
+    profileImage =
+        json['profile_image'] != null ? ProfileImage.fromJson(json['profile_image']) : null;
     instagramUsername = json['instagram_username'];
     totalCollections = json['total_collections'];
     totalLikes = json['total_likes'];
     totalPhotos = json['total_photos'];
     acceptedTos = json['accepted_tos'];
     forHire = json['for_hire'];
-    social =
-    json['social'] != null ? Social.fromJson(json['social']) : null;
+    social = json['social'] != null ? Social.fromJson(json['social']) : null;
   }
 }

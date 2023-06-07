@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/screen/home_page.dart';
-import 'package:flutter_pinterestclone/screen/main_page.dart';
+import 'package:flutter_pinterestclone/screen/main_screen.dart';
+import 'package:flutter_pinterestclone/screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
-      routes: {HomePage.id: (context) => HomePage(), MainPage.id: (context) => MainPage()},
+      home: MainScreen(),
+      routes: {
+        MainScreen.ROUTE_NAME: (context) => MainScreen(),
+        HomeScreen.ROUTE_NAME: (context) => HomeScreen(),
+        },
     );
   }
 }

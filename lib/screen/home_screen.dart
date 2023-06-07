@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 
 import '../views/item_of_photos.dart';
 
-class MainPage extends StatefulWidget {
-  static final String id = "main_page";
+class HomeScreen extends StatefulWidget {
+  static const String ROUTE_NAME = "home_screen";
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomeScreenState extends State<HomeScreen> {
   MainViewModel viewModel = MainViewModel(NetworkManagerImpl());
 
   int page = 1;

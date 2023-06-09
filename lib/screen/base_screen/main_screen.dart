@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/screen/home_screen.dart';
+import 'package:flutter_pinterestclone/screen/home_screen/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static const String ROUTE_NAME = "main_page";
@@ -14,10 +14,10 @@ class _MainScreenState extends State<MainScreen> {
   int currentTap = 0;
 
   final List<IconData> _icons = [
-    Icons.person,
+    Icons.home,
     Icons.sms_rounded,
     Icons.search,
-    Icons.home,
+    Icons.person,
   ];
 
   final List<Widget> _pages = [
@@ -39,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
             controller: _pageController,
             onPageChanged: (int index) {
               currentTap = index;
+              setState(() {});
             },
             children: _pages,
           ),
@@ -52,15 +53,15 @@ class _MainScreenState extends State<MainScreen> {
                   margin: const EdgeInsets.only(right: 65, left: 65, bottom: 35),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    child: BottomNavigationBar(
+                    child: CupertinoTabBar(
                       currentIndex: currentTap,
                       items: getBottomNavigationBarItems(),
-                      selectedIconTheme: const IconThemeData(color: Colors.black),
-                      unselectedIconTheme: const IconThemeData(color: Colors.black54),
-                      type: BottomNavigationBarType.shifting,
+                      activeColor: Colors.black,
+                      inactiveColor: Colors.black54,
                       onTap: (int index) {
                         currentTap = index;
                         _pageController.jumpToPage(index);
+                        setState(() {});
                       },
                     ),
                   ),
@@ -78,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
     for (var icon in _icons) {
       items.add(
         BottomNavigationBarItem(
-          icon: Icon(icon, size: 32),
+          icon: Icon(icon, size: 24),
         ),
       );
     }

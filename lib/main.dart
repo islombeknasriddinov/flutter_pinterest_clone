@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/screen/main_screen.dart';
-import 'package:flutter_pinterestclone/screen/home_screen.dart';
+import 'package:flutter_pinterestclone/screen/base_screen/main_screen.dart';
+import 'package:flutter_pinterestclone/screen/home_screen/home_screen.dart';
+import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
 
 void main() {
+  ViewModelProvider.init();
+
   runApp(const MyApp());
 }
 
@@ -12,15 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: MainScreen(),
       routes: {
         MainScreen.ROUTE_NAME: (context) => MainScreen(),
         HomeScreen.ROUTE_NAME: (context) => HomeScreen(),
-        },
+      },
     );
   }
 }

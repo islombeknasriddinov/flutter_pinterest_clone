@@ -10,12 +10,15 @@ Widget itemOfPhotos(PhotoHome photoHome, BuildContext context) {
         const SizedBox(height: 8),
         GestureDetector(
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(18.0),
-              child: CachedNetworkImage(
-                placeholder: (context, url) => Image.asset("assets/images/notFound.jpg"),
-                imageUrl: photoHome.urls!.smallS3!,
-                errorWidget: (context, url, error) => Image.asset("assets/images/notFound.jpg"),
-              )),
+            borderRadius: BorderRadius.circular(18.0),
+            child: CachedNetworkImage(
+              placeholder: (context, url) =>
+                  Image.asset("assets/images/notFound.jpg"),
+              imageUrl: photoHome.urls!.smallS3!,
+              errorWidget: (context, url, error) =>
+                  Image.asset("assets/images/notFound.jpg"),
+            ),
+          ),
           onTap: () {},
         ),
         const SizedBox(height: 10),
@@ -38,7 +41,8 @@ Widget itemOfPhotos(PhotoHome photoHome, BuildContext context) {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             image: DecorationImage(
-                                fit: BoxFit.cover, image: NetworkImage(photoHome.urls!.regular!))),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(photoHome.urls!.regular!))),
                       )
               ],
             ),

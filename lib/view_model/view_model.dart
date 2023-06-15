@@ -6,6 +6,8 @@ abstract class ViewModel extends ChangeNotifier {}
 abstract class MyViewModel extends ViewModel {
   void onCreate();
 
+  bool get isLoading;
+
   void onDestroy();
 }
 

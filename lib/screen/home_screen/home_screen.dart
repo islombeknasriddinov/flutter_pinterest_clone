@@ -6,7 +6,8 @@ import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/views/item_of_photos.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implements HomeScreenView {
+class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
+    implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
 
   @override
@@ -15,12 +16,13 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
   }
 
   @override
-  Widget onBuildBodyWidget(BuildContext context, MyViewModel? model) {
-    print("length : ${viewModel?.items.length}");
+  Future<void> onRefresh() async {}
+
+  @override
+  Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.builder(
       padding: const EdgeInsets.only(right: 5, left: 5),
       shrinkWrap: true,
-      physics: const ScrollPhysics(),
       itemCount: viewModel?.items.length,
       itemBuilder: (ctx, i) {
         PhotoHome? photoHome = viewModel?.items[i];
@@ -28,7 +30,8 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
 
         return itemOfPhotos(photoHome, ctx);
       },
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2),
     );
   }
 }

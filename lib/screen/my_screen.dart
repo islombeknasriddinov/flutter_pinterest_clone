@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/screen/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 
 abstract class MyScreen<Vm extends MyViewModel, V extends View>
     extends StatefulWidget implements View {
+  BuildContext? _context;
   Vm? _viewModel;
 
   Vm? get viewModel => _viewModel;
@@ -17,6 +17,12 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
   @override
   State<MyScreen> createState() => _MyScreenState();
+
+  BuildContext getContext() => _context!;
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
 
   void onCreate() {
     viewModel?.onCreate();
@@ -43,8 +49,8 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
                     Column(
                       children: [
                         ErrorMessageWidget(
-                          message: Message(messageText: "Error"),
-                          onTap: () {},
+                          message: myViewModel?.message,
+                          onTap: () => myViewModel?.resetMessage(),
                         ),
                         Expanded(child: bodyWidget)
                       ],
@@ -69,14 +75,15 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 }
 
 class _MyScreenState extends State<MyScreen> {
-  @override
-  void initState() {
-    super.initState();
-    widget.onCreate();
-  }
 
   @override
   Widget build(BuildContext context) {
+    widget.setContext(context);
+
+    if (widget.viewModel == null) {
+      widget.onCreate();
+    }
+
     return widget.build(context);
   }
 

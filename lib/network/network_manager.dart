@@ -10,6 +10,11 @@ abstract class NetworkManager {
 }
 
 class NetworkManagerImpl implements NetworkManager {
+  static const String BASE_URL = "api.unsplash.com";
+  static const String ACCESS_KEY = "Xx9ZDZTlUn7YsfX-kKUaPtIl4HfBGW50qFH1UnIJsU8";
+
+  static Map<String, String> headers = {"Authorization": "Client-ID $ACCESS_KEY"};
+
   static const String API_PHOTOS = "/photos";
   static const String API_SEARCH_PHOTOS = "/search/photos";
   static const String API_SEARCH_USERS = "/search/users";
@@ -19,7 +24,7 @@ class NetworkManagerImpl implements NetworkManager {
 
   @override
   Future<List<PhotoHome>> getPhotos({required int page}) async {
-    NetworkRequest request = NetworkRequest(API_PHOTOS);
+    NetworkRequest request = NetworkRequest(BASE_URL, headers, API_PHOTOS);
     request.addParams({
       'page': "$page",
       'per_page': "20",
@@ -34,7 +39,7 @@ class NetworkManagerImpl implements NetworkManager {
 
   @override
   Future<RelatedPhotos> getRelatedPhotos(String id) async {
-    NetworkRequest request = NetworkRequest(API_RELATED(id));
+    NetworkRequest request = NetworkRequest(BASE_URL, headers, API_RELATED(id));
     var response = await Network.getRequest(request);
     if (response.isSuccessful) {
       return RelatedPhotos.fromJson(response.getMapResponse());

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/items/item_of_photos.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/views/item_of_photos.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
@@ -11,12 +11,9 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
   static const String ROUTE_NAME = "home_screen";
 
   @override
-  void onCreate() {
-    super.onCreate();
+  Future<void> onRefresh() async {
+    await viewModel?.refreshData();
   }
-
-  @override
-  Future<void> onRefresh() async {}
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
@@ -30,8 +27,7 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
 
         return itemOfPhotos(photoHome, ctx);
       },
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
     );
   }
 }

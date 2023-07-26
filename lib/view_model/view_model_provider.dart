@@ -1,6 +1,8 @@
 import 'package:flutter_pinterestclone/network/network_manager.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
-import 'package:flutter_pinterestclone/view_model/home_view_model/home_view_model.dart';
+import 'package:flutter_pinterestclone/view_model/home_viewmodel/home_view_model.dart';
+import 'package:flutter_pinterestclone/view_model/main_viewmodel/main_view_model.dart';
+import 'package:flutter_pinterestclone/view_model/splash_viewmodel/splash_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 
 typedef OnBlocBuilder<R, T> = R Function(T view);
@@ -14,9 +16,20 @@ class ViewModelProvider<R extends ViewModel, T extends View> {
 
   static NetworkManager get networkManager => NetworkManagerImpl();
 
-  static void init() {
+  static Future<void> init() async {
     register(
-        HomeScreenView, (view) => HomeScreenViewModelImpl(view as HomeScreenView, networkManager));
+      SplashScreenView,
+          (view) =>
+          SplashScreenViewModelImpl(view as SplashScreenView, networkManager),
+    );
+    register(
+      MainScreenView,
+      (view) => MainScreenViewModelImpl(view as MainScreenView),
+    );
+    register(
+      HomeScreenView,
+      (view) => HomeScreenViewModelImpl(view as HomeScreenView, networkManager),
+    );
   }
 
   static ViewModelProvider of(View view) {

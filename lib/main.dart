@@ -22,12 +22,13 @@ class MyApp extends StatelessWidget {
     ViewModelProvider.init();
 
     return MaterialApp(
+      home: SplashScreen(),
+      initialRoute: SplashScreen.ROUTE_NAME,
       routes: {
         SplashScreen.ROUTE_NAME: (context) => SplashScreen(),
         MainScreen.ROUTE_NAME: (context) => MainScreen(),
         HomeScreen.ROUTE_NAME: (context) => HomeScreen(),
       },
-      home: SplashScreen(),
     );
   }
 }

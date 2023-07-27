@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
 import 'package:flutter_pinterestclone/screen/home_screen/home_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
+import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 
@@ -14,31 +15,28 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
   }
 
   final PageController _pageController = PageController();
-  int currentTap = 0;
+  static const int HOME_SCREEN = 0;
+  static const int SEARCH_SCREEN = 1;
+  static const int MESSAGE_SCREEN = 2;
+  static const int PROFILE_SCREEN = 3;
 
   final List<IconData> _icons = [
     Icons.home,
-    Icons.sms_rounded,
     Icons.search,
+    Icons.sms,
     Icons.person,
   ];
 
   final List<Widget> _pages = [
     HomeScreen(),
+    SearchScreen(),
   ];
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
       children: [
-        PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: (int index) {
-            currentTap = index;
-          },
-          children: _pages,
-        ),
+        currentPage(),
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,12 +48,12 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                   child: CupertinoTabBar(
-                    currentIndex: currentTap,
+                    currentIndex: viewModel!.currentIndex,
                     items: getBottomNavigationBarItems(),
                     activeColor: Colors.black,
                     inactiveColor: Colors.black54,
                     onTap: (int index) {
-                      currentTap = index;
+                      viewModel?.setCurrentIndex(index);
                       _pageController.jumpToPage(index);
                     },
                   ),
@@ -75,5 +73,19 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     }
 
     return items;
+  }
+
+  Widget currentPage() {
+    switch (viewModel?.currentIndex) {
+      case SEARCH_SCREEN:
+        return SearchScreen();
+      case MESSAGE_SCREEN:
+        return Container();
+      case PROFILE_SCREEN:
+        return Container();
+      case HOME_SCREEN:
+      default:
+        return HomeScreen();
+    }
   }
 }

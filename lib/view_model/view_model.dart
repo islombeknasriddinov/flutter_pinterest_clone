@@ -18,10 +18,17 @@ abstract class MyViewModel extends ViewModel {
 
 abstract class SplashScreenViewModel extends MyViewModel {}
 
-abstract class MainScreenViewModel extends MyViewModel {}
+abstract class MainScreenViewModel extends MyViewModel {
+
+  int get currentIndex;
+
+  void setCurrentIndex(int index);
+}
 
 abstract class HomeScreenViewModel extends MyViewModel {
   List<PhotoHome> get items;
 
   Future<void> refreshData();
 }
+
+abstract class SearchScreenViewModel extends MyViewModel {}

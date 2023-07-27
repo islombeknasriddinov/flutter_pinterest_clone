@@ -10,6 +10,13 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
   static const String ROUTE_NAME = "home_screen";
 
   @override
+  void onCreate() {
+    super.onCreate();
+
+    setRefreshable(true);
+  }
+
+  @override
   Future<void> onRefresh() async {
     await viewModel?.refreshData();
   }
@@ -29,4 +36,6 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
       gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
     );
   }
+
+
 }

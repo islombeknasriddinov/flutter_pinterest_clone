@@ -6,10 +6,12 @@ import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
 import 'package:flutter_pinterestclone/widget/error_message_widget.dart';
 import 'package:provider/provider.dart';
 
-abstract class MyScreen<Vm extends MyViewModel, V extends View>
-    extends StatefulWidget implements View {
+abstract class MyScreen<Vm extends MyViewModel, V extends View> extends StatefulWidget
+    implements View {
   BuildContext? _context;
   Vm? _viewModel;
+  bool _refreshable = false;
+  bool _scrollable = false;
 
   Vm? get viewModel => _viewModel;
 
@@ -22,6 +24,14 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
   void setContext(BuildContext context) {
     _context = context;
+  }
+
+  void setRefreshable(bool refresh) {
+    _refreshable = refresh;
+  }
+
+  void setScrollable(bool scrollable) {
+    _scrollable = scrollable;
   }
 
   void onCreate() {
@@ -40,24 +50,32 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
           child: Consumer<Vm>(
             builder: (_, model, child) {
               Widget bodyWidget = onBuildBodyWidget(context);
-
-              return RefreshIndicator(
-                onRefresh: onRefresh,
-                child: Stack(
-                  children: [
-                    CircularIndicatorWidget(myViewModel?.isLoading == true),
-                    Column(
-                      children: [
-                        ErrorMessageWidget(
-                          message: myViewModel?.message,
-                          onTap: () => myViewModel?.resetMessage(),
-                        ),
-                        Expanded(child: bodyWidget)
-                      ],
-                    ),
-                  ],
-                ),
+              if (_scrollable == true) {
+                bodyWidget = SingleChildScrollView(child: bodyWidget);
+              }
+              bodyWidget = Stack(
+                children: [
+                  CircularIndicatorWidget(myViewModel?.isLoading == true),
+                  Column(
+                    children: [
+                      ErrorMessageWidget(
+                        message: myViewModel?.message,
+                        onTap: () => myViewModel?.resetMessage(),
+                      ),
+                      Expanded(child: bodyWidget)
+                    ],
+                  ),
+                ],
               );
+
+              if (_refreshable == true) {
+                bodyWidget = RefreshIndicator(
+                  onRefresh: onRefresh,
+                  child: bodyWidget,
+                );
+              }
+
+              return bodyWidget;
             },
           ),
         ),
@@ -75,7 +93,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 }
 
 class _MyScreenState extends State<MyScreen> {
-
   @override
   Widget build(BuildContext context) {
     widget.setContext(context);

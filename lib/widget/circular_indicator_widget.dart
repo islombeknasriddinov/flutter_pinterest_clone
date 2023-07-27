@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class CircularIndicatorWidget extends StatelessWidget {
   final bool isLoading;
 
-  CircularIndicatorWidget(this.isLoading);
+  const CircularIndicatorWidget(this.isLoading);
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? Container(
-            width: double.infinity,
-            height: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             color: Colors.white,
             child: const Center(
               child: CircularProgressIndicator(),

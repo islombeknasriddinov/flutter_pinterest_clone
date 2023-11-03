@@ -5,17 +5,14 @@ import 'package:flutter_pinterestclone/network/bean/network_response.dart';
 import 'package:http/http.dart';
 
 class Network {
-  static const String BASE = "api.unsplash.com";
-  static const String ACCESS_KEY = "Xx9ZDZTlUn7YsfX-kKUaPtIl4HfBGW50qFH1UnIJsU8";
-
-  static Map<String, String> headers = {"Authorization": "Client-ID $ACCESS_KEY"};
 
   static Future<NetworkResponse> getRequest(NetworkRequest request) async {
-    var uri = Uri.https(BASE, request.api, request.params);
-    var data = await get(uri, headers: headers);
+    var uri = Uri.https(request.baseUrl, request.api, request.params);
+    var data = await get(uri, headers: request.header);
     NetworkResponse response = NetworkResponse(
+      uri: data.request?.url.toString(),
       api: request.api,
-      requestType: "GET",
+      requestType: data.request?.method,
       statusCode: data.statusCode,
       response: jsonDecode(data.body),
     );

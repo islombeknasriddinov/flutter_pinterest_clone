@@ -1,16 +1,22 @@
+import 'package:flutter/foundation.dart';
+
 class NetworkResponse {
-  final String api;
-  final int statusCode;
-  final String requestType;
+  final String? uri;
+  final String? api;
+  final int? statusCode;
+  final String? requestType;
   final dynamic response;
 
   NetworkResponse({
+    required this.uri,
     required this.api,
     required this.statusCode,
     required this.requestType,
     required this.response,
   }) {
-    print(toString());
+    if (kDebugMode) {
+      print(toString());
+    }
   }
 
   String get errorText => statusCode != 200 ? response.toString() : "";
@@ -37,14 +43,17 @@ class NetworkResponse {
 
   @override
   String toString() {
-    String label = "----------------------- $NetworkResponse -----------------------";
-    String strSuccess =
-        "api : $api \n status code : $statusCode \n request type : $requestType \n isSuccessful : $isSuccessful \n response : $response";
-    String strError =
-        "api : $api \n status code : $statusCode \n request type : $requestType \n error text : $errorText \n isSuccessful : $isSuccessful";
-    String endLine = "----------------------------------------------------------------";
-
-    String result = isSuccessful ? strSuccess : strError;
-    return "$label \n $result \n $endLine";
+    return [
+      " ",
+      "*** Response ***",
+      "uri: $uri",
+      "api: $api",
+      "status code: $statusCode",
+      "request type: $requestType",
+      "isSuccessful: $isSuccessful",
+      if (isSuccessful != true) "error text: $errorText",
+      if (isSuccessful == true) "response: $response",
+      " ",
+    ].join("\n");
   }
 }

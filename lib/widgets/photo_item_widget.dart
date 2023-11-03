@@ -35,7 +35,11 @@ class PhotoItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(18.0),
         child: CachedNetworkImage(
           imageUrl: photoHome.urls?.smallS3 ?? "",
-          placeholder: (context, url) => Image.asset(Assets.photoNotFound),
+          placeholder: (context, url) => CachedNetworkImage(
+            imageUrl: photoHome.urls?.thumb ?? "",
+            placeholder: (context, url) => Image.asset(Assets.photoNotFound),
+            errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
+          ),
           errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/items/photo_item_widget.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -42,9 +41,19 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
       itemCount: viewModel?.items.length,
       itemBuilder: (ctx, index) {
         PhotoHome? photoHome = viewModel?.items[index];
-      itemBuilder: (_, index) {
-        PhotoHome? photoHome = viewModel?.items[index];
-        if (photoHome == null) return Container();
+        if (photoHome == null) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          );
+        }
 
         return PhotoItemWidget(photoHome: photoHome);
       },

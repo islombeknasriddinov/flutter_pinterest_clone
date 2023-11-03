@@ -3,7 +3,7 @@ import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/views/item_of_photos.dart';
+import 'package:flutter_pinterestclone/widgets/photo_item_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implements HomeScreenView {
@@ -16,17 +16,15 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
 
   @override
   Widget onBuildBodyWidget(BuildContext context, MyViewModel? model) {
-    print("length : ${viewModel?.items.length}");
     return MasonryGridView.builder(
       padding: const EdgeInsets.only(right: 5, left: 5),
       shrinkWrap: true,
-      physics: const ScrollPhysics(),
       itemCount: viewModel?.items.length,
-      itemBuilder: (ctx, i) {
-        PhotoHome? photoHome = viewModel?.items[i];
+      itemBuilder: (ctx, index) {
+        PhotoHome? photoHome = viewModel?.items[index];
         if (photoHome == null) return Container();
 
-        return itemOfPhotos(photoHome, ctx);
+        return PhotoItemWidget(photoHome: photoHome);
       },
       gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
     );

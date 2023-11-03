@@ -13,12 +13,12 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
   bool _refreshable = false;
   bool _scrollable = false;
 
+  @override
+  State<MyScreen> createState() => _MyScreenState();
+
   Vm? get viewModel => _viewModel;
 
   MyViewModel? get myViewModel => _viewModel;
-
-  @override
-  State<MyScreen> createState() => _MyScreenState();
 
   BuildContext getContext() => _context!;
 
@@ -55,12 +55,12 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
               }
               bodyWidget = Stack(
                 children: [
-                  CircularIndicatorWidget(myViewModel?.isLoading == true),
+                  CircularIndicatorWidget(model.isLoading),
                   Column(
                     children: [
                       ErrorMessageWidget(
-                        message: myViewModel?.message,
-                        onTap: () => myViewModel?.resetMessage(),
+                        message: model.message,
+                        onTap: () => model.resetMessage(),
                       ),
                       Expanded(child: bodyWidget)
                     ],
@@ -83,7 +83,9 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     );
   }
 
-  void onDestroy() {}
+  void onDestroy() {
+    viewModel?.onDestroy();
+  }
 
   Widget onBuildBodyWidget(BuildContext context) {
     return Container();

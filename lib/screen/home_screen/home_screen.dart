@@ -5,15 +5,26 @@ import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
+
+  final ScrollController _controller = ScrollController();
 
   @override
   void onCreate() {
     super.onCreate();
 
     setRefreshable(true);
+
+    _controller.addListener(paginationListener);
+  }
+
+  void paginationListener() async {
+    if (_controller.offset == _controller.position.maxScrollExtent) {
+      await viewModel?.loadData();
+    }
   }
 
   @override
@@ -24,6 +35,7 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.builder(
+      controller: _controller,
       shrinkWrap: true,
       padding: const EdgeInsets.only(right: 2.5, left: 2.5),
       itemCount: viewModel?.items.length,
@@ -37,5 +49,9 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
     );
   }
 
-
+  @override
+  void onDestroy() {
+    _controller.removeListener(paginationListener);
+    super.onDestroy();
+  }
 }

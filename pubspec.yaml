@@ -22,6 +22,7 @@ dependencies:
   cached_network_image: 3.2.2
   lottie: 2.2.0
   connectivity_plus: ^3.0.6
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

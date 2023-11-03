@@ -28,6 +28,8 @@ abstract class MainScreenViewModel extends MyViewModel {
 abstract class HomeScreenViewModel extends MyViewModel {
   List<PhotoHome> get items;
 
+  Future<void> loadData();
+
   Future<void> refreshData();
 }
 

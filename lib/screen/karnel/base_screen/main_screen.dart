@@ -14,7 +14,6 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     ScreenManager.replaceRoute(context, ROUTE_NAME);
   }
 
-  final PageController _pageController = PageController();
   static const int HOME_SCREEN = 0;
   static const int SEARCH_SCREEN = 1;
   static const int MESSAGE_SCREEN = 2;
@@ -25,11 +24,6 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     Icons.search,
     Icons.sms,
     Icons.person,
-  ];
-
-  final List<Widget> _pages = [
-    HomeScreen(),
-    SearchScreen(),
   ];
 
   @override
@@ -53,8 +47,9 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
                     activeColor: Colors.black,
                     inactiveColor: Colors.black54,
                     onTap: (int index) {
+                      print(index);
+
                       viewModel?.setCurrentIndex(index);
-                      _pageController.jumpToPage(index);
                     },
                   ),
                 ),
@@ -84,6 +79,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
       case PROFILE_SCREEN:
         return Container();
       case HOME_SCREEN:
+        return HomeScreen();
       default:
         return HomeScreen();
     }

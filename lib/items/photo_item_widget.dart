@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PhotoItemWidget extends StatelessWidget {
   PhotoHome photoHome;

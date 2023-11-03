@@ -44,6 +44,7 @@ class NetworkResponse {
   @override
   String toString() {
     return [
+      " ",
       "*** Response ***",
       "uri: $uri",
       "api: $api",

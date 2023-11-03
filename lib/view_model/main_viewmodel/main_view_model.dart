@@ -20,8 +20,7 @@ class MainScreenViewModelImpl extends MyViewModelImpl<MainScreenView>
   void setCurrentIndex(int index) {
     if (index != _currentIndex) {
       _currentIndex = index;
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 }

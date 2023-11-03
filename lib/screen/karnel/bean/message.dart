@@ -10,7 +10,7 @@ class Message {
   Message.error({
     required this.messageText,
     this.messageTextColor = Colors.white,
-    this.backgroundColor = Colors.redAccent,
+    this.backgroundColor = Colors.red,
   });
 
   Message.success({

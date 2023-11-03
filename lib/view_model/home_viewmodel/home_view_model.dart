@@ -12,27 +12,26 @@ import 'package:flutter_pinterestclone/screen/karnel/bean/message.dart';
 class HomeScreenViewModelImpl extends MyViewModelImpl<HomeScreenView>
     implements HomeScreenViewModel {
   final NetworkManager networkManager;
-  var subscription;
 
   final List<PhotoHome> _list = [];
 
   @override
   List<PhotoHome> get items => _list;
 
-  HomeScreenViewModelImpl(HomeScreenView view, this.networkManager)
-      : super(view);
+  HomeScreenViewModelImpl(HomeScreenView view, this.networkManager) : super(view);
+
+  var subscription;
+
+  int _page = 1;
 
   @override
   void onCreate() {
     super.onCreate();
-    _apiPhotoList(1);
+    _apiPhotoList(_page);
 
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        _apiPhotoList(1);
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
+        _apiPhotoList(_page);
       }
     });
   }
@@ -40,13 +39,30 @@ class HomeScreenViewModelImpl extends MyViewModelImpl<HomeScreenView>
   @override
   Future<void> refreshData() async {
     _list.clear();
-    await _apiPhotoList(1);
+    _page += 1;
+    await _apiPhotoList(_page, withProgress: false);
     notifyListeners();
   }
 
-  Future<void> _apiPhotoList(int page) async {
+  @override
+  Future<void> loadData() async {
+    _page += 1;
+    await _apiPhotoList(_page);
+  }
+
+  Future<void> _apiPhotoList(int page, {bool withProgress = true}) async {
     try {
-      setProgress(true);
+      resetMessage();
+
+      final result = await Connectivity().checkConnectivity();
+
+      if (result == ConnectivityResult.none) {
+        setErrorMessage(Message.error(messageText: "Подключение к интернету прервано"));
+        return;
+      }
+
+      if (withProgress == true) setProgress(true);
+
       List<PhotoHome> photoList = await networkManager.getPhotos(page: page);
       if (photoList.isNotEmpty) {
         _list.addAll(photoList);
@@ -55,15 +71,14 @@ class HomeScreenViewModelImpl extends MyViewModelImpl<HomeScreenView>
       Logger.e(e, st);
       setErrorMessage(Message.error(messageText: e.toString()));
     } finally {
-      setProgress(false);
+      if (withProgress == true) setProgress(false);
     }
-
-    notifyListeners();
   }
 
   @override
   void onDestroy() {
     subscription.cancel();
+
     super.onDestroy();
   }
 }

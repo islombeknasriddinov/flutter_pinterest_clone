@@ -20,8 +20,10 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
 
   @override
   void resetMessage() {
-    _message = null;
-    notifyListeners();
+    if (message != null) {
+      _message = null;
+      notifyListeners();
+    }
   }
 
   @override
@@ -29,6 +31,7 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
 
   void setProgress(bool value) {
     _isLoading = value;
+    notifyListeners();
   }
 
   void setErrorMessage(Message newMessage) {

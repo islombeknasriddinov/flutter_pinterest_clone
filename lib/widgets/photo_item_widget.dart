@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/assets.dart';
+import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
 
 class PhotoItemWidget extends StatelessWidget {
   PhotoHome photoHome;
@@ -17,14 +18,18 @@ class PhotoItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(2.5),
-      child: Column(
-        children: [
-          _buildPhotoWidget(),
-          const SizedBox(height: 10),
-          _buildInfosWidget(),
-        ],
+    return Hero(
+      tag: photoHome.id,
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildPhotoWidget(),
+            const SizedBox(height: 10),
+            _buildInfosWidget(),
+          ],
+        ),
       ),
     );
   }
@@ -35,11 +40,13 @@ class PhotoItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(18.0),
         child: CachedNetworkImage(
           imageUrl: photoHome.urls?.smallS3 ?? "",
-          placeholder: (context, url) => CachedNetworkImage(
-            imageUrl: photoHome.urls?.thumb ?? "",
-            placeholder: (context, url) => Image.asset(Assets.photoNotFound),
-            errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
+          progressIndicatorBuilder: (ctx, url, progress) => Stack(
+            children: [
+              Image.asset(Assets.photoNotFound),
+              //const CircularIndicatorWidget(true),
+            ],
           ),
+          //placeholder: (context, url) => Image.asset(Assets.photoNotFound),
           errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
         ),
       ),
@@ -66,7 +73,7 @@ class PhotoItemWidget extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(18.0),
         ),
-        child: const Icon(Icons.more_horiz, color: Colors.black),
+        child: const Icon(Icons.more_horiz, color: Colors.black54),
       ),
     );
   }
@@ -76,19 +83,26 @@ class PhotoItemWidget extends StatelessWidget {
 
     if (description == null) return Expanded(child: Container());
 
-    return Expanded(
-      child: Text(
-        description,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          fontSize: 12,
+    return Container(
+      child: Hero(
+        tag: "#${photoHome.id}",
+        child: Expanded(
+          child: Text(
+            description,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 12),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildProfilePhotoWidget() {
+    final profileImage = photoHome.user?.profileImage?.medium;
+
+    if (profileImage == null) return Container();
+
     return Container(
       height: 30,
       width: 30,
@@ -97,7 +111,7 @@ class PhotoItemWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: NetworkImage(photoHome.user?.profileImage?.medium ?? ""),
+          image: NetworkImage(profileImage),
         ),
       ),
     );

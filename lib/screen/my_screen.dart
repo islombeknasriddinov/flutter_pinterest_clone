@@ -12,6 +12,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
   Vm? _viewModel;
   bool _refreshable = false;
   bool _scrollable = false;
+  Color? _backgroundColor;
 
   @override
   State<MyScreen> createState() => _MyScreenState();
@@ -34,6 +35,12 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     _scrollable = scrollable;
   }
 
+  void setBackgroundColor(Color color) {
+    _backgroundColor = color;
+  }
+
+  Future<void> onRefresh() async {}
+
   void onCreate() {
     viewModel?.onCreate();
     if (_viewModel == null) {
@@ -42,8 +49,19 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     }
   }
 
+  void onDestroy() {
+    viewModel?.onDestroy();
+  }
+
+  PreferredSizeWidget? buildAppBarWidget(BuildContext context){
+    return null;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _backgroundColor,
+      appBar: buildAppBarWidget(context),
+      persistentFooterButtons: buildPersistentFooterWidgets(context),
       body: SafeArea(
         child: ChangeNotifierProvider<Vm>.value(
           value: viewModel!,
@@ -55,7 +73,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
               }
               bodyWidget = Stack(
                 children: [
-                  CircularIndicatorWidget(model.isLoading),
                   Column(
                     children: [
                       ErrorMessageWidget(
@@ -65,6 +82,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
                       Expanded(child: bodyWidget)
                     ],
                   ),
+                  CircularIndicatorWidget(model.isLoading),
                 ],
               );
 
@@ -83,15 +101,13 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     );
   }
 
-  void onDestroy() {
-    viewModel?.onDestroy();
-  }
-
   Widget onBuildBodyWidget(BuildContext context) {
     return Container();
   }
 
-  Future<void> onRefresh() async {}
+  List<Widget>? buildPersistentFooterWidgets(BuildContext context){
+    return null;
+  }
 }
 
 class _MyScreenState extends State<MyScreen> {

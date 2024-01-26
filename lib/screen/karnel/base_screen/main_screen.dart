@@ -46,11 +46,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
                     items: getBottomNavigationBarItems(),
                     activeColor: Colors.black,
                     inactiveColor: Colors.black54,
-                    onTap: (int index) {
-                      print(index);
-
-                      viewModel?.setCurrentIndex(index);
-                    },
+                    onTap: (int index) => viewModel?.setCurrentIndex(index),
                   ),
                 ),
               ),

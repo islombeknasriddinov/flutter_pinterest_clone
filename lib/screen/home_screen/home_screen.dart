@@ -17,6 +17,7 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
     super.onCreate();
 
     setRefreshable(true);
+    setBackgroundColor(Colors.white);
 
     _controller.addListener(paginationListener);
   }
@@ -36,8 +37,9 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
   Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.builder(
       controller: _controller,
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(right: 2.5, left: 2.5),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 5,
       itemCount: viewModel?.items.length,
       itemBuilder: (ctx, index) {
         PhotoHome? photoHome = viewModel?.items[index];

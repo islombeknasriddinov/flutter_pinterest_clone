@@ -14,6 +14,8 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
 
   @override
   void onCreate() {
+
+
     super.onCreate();
 
     setRefreshable(true);

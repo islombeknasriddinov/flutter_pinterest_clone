@@ -34,3 +34,5 @@ abstract class HomeScreenViewModel extends MyViewModel {
 }
 
 abstract class SearchScreenViewModel extends MyViewModel {}
+
+abstract class DetailScreenViewModel extends MyViewModel {}

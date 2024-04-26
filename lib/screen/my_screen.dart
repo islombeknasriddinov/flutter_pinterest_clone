@@ -6,8 +6,14 @@ import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
 import 'package:flutter_pinterestclone/widget/error_message_widget.dart';
 import 'package:provider/provider.dart';
 
-abstract class MyScreen<Vm extends MyViewModel, V extends View> extends StatefulWidget
-    implements View {
+abstract class MyArgument {
+  String get argKey;
+
+  Map<String, dynamic> arg() => {argKey: this};
+}
+
+abstract class MyScreen<Vm extends MyViewModel, V extends View>
+    extends StatefulWidget implements View {
   BuildContext? _context;
   Vm? _viewModel;
   bool _refreshable = false;
@@ -22,6 +28,13 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
   MyViewModel? get myViewModel => _viewModel;
 
   BuildContext getContext() => _context!;
+
+  T? getArgument<T extends MyArgument>() {
+    final myArgument =
+        (ModalRoute.of(getContext())?.settings.arguments as MyArgument);
+
+    return myArgument.arg()[myArgument.argKey] as T;
+  }
 
   void setContext(BuildContext context) {
     _context = context;
@@ -53,7 +66,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     viewModel?.onDestroy();
   }
 
-  PreferredSizeWidget? buildAppBarWidget(BuildContext context){
+  PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
     return null;
   }
 
@@ -105,7 +118,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends Stateful
     return Container();
   }
 
-  List<Widget>? buildPersistentFooterWidgets(BuildContext context){
+  List<Widget>? buildPersistentFooterWidgets(BuildContext context) {
     return null;
   }
 }

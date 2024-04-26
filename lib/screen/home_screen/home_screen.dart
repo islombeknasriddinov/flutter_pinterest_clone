@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -7,15 +8,14 @@ import 'package:flutter_pinterestclone/widgets/photo_item_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implements HomeScreenView {
+class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
+    implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
 
   final ScrollController _controller = ScrollController();
 
   @override
   void onCreate() {
-
-
     super.onCreate();
 
     setRefreshable(true);
@@ -59,9 +59,16 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView> implement
           );
         }
 
-        return PhotoItemWidget(photoHome: photoHome);
+        return PhotoItemWidget(
+          photoHome: photoHome,
+          onTapItem: (photoHome) => DetailScreen.open(
+            getContext(),
+            ArgDetailScreen(photoHome),
+          ),
+        );
       },
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2),
     );
   }
 

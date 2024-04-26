@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/karnel/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/home_screen/home_screen.dart';
 import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         MainScreen.ROUTE_NAME: (context) => MainScreen(),
         HomeScreen.ROUTE_NAME: (context) => HomeScreen(),
         SearchScreen.ROUTE_NAME: (context) => SearchScreen(),
+        DetailScreen.ROUTE_NAME: (context) => DetailScreen(),
       },
     );
   }

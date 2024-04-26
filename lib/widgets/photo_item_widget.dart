@@ -18,39 +18,40 @@ class PhotoItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: photoHome.id,
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _buildPhotoWidget(),
-            const SizedBox(height: 10),
-            _buildInfosWidget(),
-          ],
-        ),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildPhotoWidget(),
+          const SizedBox(height: 10),
+          _buildInfosWidget(),
+        ],
       ),
     );
   }
 
   Widget _buildPhotoWidget() {
-    return GestureDetector(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(18.0),
-        child: CachedNetworkImage(
-          imageUrl: photoHome.urls?.smallS3 ?? "",
-          progressIndicatorBuilder: (ctx, url, progress) => Stack(
-            children: [
-              Image.asset(Assets.photoNotFound),
-              //const CircularIndicatorWidget(true),
-            ],
+    return Hero(
+      tag: photoHome.id,
+      child: GestureDetector(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18.0),
+          child: CachedNetworkImage(
+            imageUrl: photoHome.urls?.smallS3 ?? "",
+            progressIndicatorBuilder: (ctx, url, progress) => Stack(
+              children: [
+                Image.asset(Assets.photoNotFound),
+                //const CircularIndicatorWidget(true),
+              ],
+            ),
+            //placeholder: (context, url) => Image.asset(Assets.photoNotFound),
+            errorWidget: (context, url, error) =>
+                Image.asset(Assets.photoNotFound),
           ),
-          //placeholder: (context, url) => Image.asset(Assets.photoNotFound),
-          errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
         ),
+        onTap: () => onTapItem?.call(photoHome),
       ),
-      onTap: () => onTapItem?.call(photoHome),
     );
   }
 
@@ -83,17 +84,12 @@ class PhotoItemWidget extends StatelessWidget {
 
     if (description == null) return Expanded(child: Container());
 
-    return Container(
-      child: Hero(
-        tag: "#${photoHome.id}",
-        child: Expanded(
-          child: Text(
-            description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 12),
-          ),
-        ),
+    return Expanded(
+      child: Text(
+        description,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontSize: 12),
       ),
     );
   }

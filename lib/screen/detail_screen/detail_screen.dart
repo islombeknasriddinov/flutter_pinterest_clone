@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
+import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -44,7 +45,17 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
       height: double.infinity,
       child: Hero(
         tag: arg.photoHome.id,
-        child: CachedNetworkImage(imageUrl: arg.photoHome.urls?.smallS3 ?? ""),
+        child: CachedNetworkImage(
+          imageUrl: arg.photoHome.urls?.full ?? "",
+          placeholder: (ctx, widget) => CachedNetworkImage(
+            imageUrl: arg.photoHome.urls?.smallS3 ?? "",
+            errorWidget: (ctx, error, st) {
+              viewModel?.setErrorMessage(Message.error(messageText: error));
+
+              return Container();
+            },
+          ),
+        ),
       ),
     );
   }

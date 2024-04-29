@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/screen/.base/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
-import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/widgets/photo_item_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
+class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
     implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
 
@@ -25,7 +25,7 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
   }
 
   void paginationListener() async {
-    if (_controller.offset == _controller.position.maxScrollExtent) {
+    if (_controller.offset == _controller.position.maxScrollExtent - 20) {
       await viewModel?.loadData();
     }
   }
@@ -37,7 +37,8 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
-    return MasonryGridView.builder(
+    return MasonryGridView.count(
+      crossAxisCount: 2,
       controller: _controller,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       crossAxisSpacing: 8,
@@ -67,8 +68,6 @@ class HomeScreen extends MyScreen<HomeScreenViewModel, HomeScreenView>
           ),
         );
       },
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2),
     );
   }
 

@@ -7,7 +7,8 @@ import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 
-class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implements MainScreenView {
+class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
+    extends MyScreen<Vm, V> implements MainScreenView {
   static const String ROUTE_NAME = "main_screen";
 
   static replace(BuildContext context) {
@@ -20,39 +21,37 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
   static const int PROFILE_SCREEN = 3;
 
   final List<IconData> _icons = [
-    Icons.home,
-    Icons.search,
-    Icons.sms,
-    Icons.person,
+    CupertinoIcons.house_fill,
+    CupertinoIcons.search,
+    CupertinoIcons.chat_bubble_2_fill,
+    CupertinoIcons.profile_circled,
   ];
+
+  late HomeScreen homeScreen = HomeScreen();
+  late SearchScreen searchScreen = SearchScreen();
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
       children: [
         currentPage(),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Container(
-                height: 55,
-                margin: const EdgeInsets.only(right: 65, left: 65, bottom: 35),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  child: CupertinoTabBar(
-                    currentIndex: viewModel!.currentIndex,
-                    items: getBottomNavigationBarItems(),
-                    activeColor: Colors.black,
-                    inactiveColor: Colors.black54,
-                    onTap: (int index) => viewModel?.setCurrentIndex(index),
-                  ),
-                ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: kToolbarHeight,
+            margin: const EdgeInsets.only(right: 65, left: 65, bottom: 35),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              child: CupertinoTabBar(
+                currentIndex: viewModel!.currentIndex,
+                items: getBottomNavigationBarItems(),
+                activeColor: Colors.black,
+                inactiveColor: Colors.black54,
+                onTap: (int index) => viewModel?.setCurrentIndex(index),
               ),
-            )
-          ],
-        )
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -69,15 +68,14 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
   Widget currentPage() {
     switch (viewModel?.currentIndex) {
       case SEARCH_SCREEN:
-        return SearchScreen();
+        return searchScreen;
       case MESSAGE_SCREEN:
         return Container();
       case PROFILE_SCREEN:
         return Container();
       case HOME_SCREEN:
-        return HomeScreen();
       default:
-        return HomeScreen();
+        return homeScreen;
     }
   }
 }

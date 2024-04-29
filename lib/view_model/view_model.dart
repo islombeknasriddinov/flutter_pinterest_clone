@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/screen/karnel/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
 
 abstract class ViewModel extends ChangeNotifier {}
 
@@ -14,6 +14,8 @@ abstract class MyViewModel extends ViewModel {
   void resetMessage();
 
   void onDestroy();
+
+  void setErrorMessage(Message newMessage);
 }
 
 abstract class SplashScreenViewModel extends MyViewModel {}
@@ -25,7 +27,7 @@ abstract class MainScreenViewModel extends MyViewModel {
   void setCurrentIndex(int index);
 }
 
-abstract class HomeScreenViewModel extends MyViewModel {
+abstract class HomeScreenViewModel extends MainScreenViewModel {
   List<PhotoHome> get items;
 
   Future<void> loadData();

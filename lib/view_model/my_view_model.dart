@@ -1,6 +1,6 @@
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/screen/karnel/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
 
 abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   final V view;

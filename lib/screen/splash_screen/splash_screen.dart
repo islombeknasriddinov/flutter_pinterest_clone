@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/asset_manager.dart';
-import 'package:flutter_pinterestclone/screen/karnel/base_screen/main_screen.dart';
+import 'package:flutter_pinterestclone/screen/.base/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';

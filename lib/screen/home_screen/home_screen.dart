@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/screen/.base/base_screen/main_screen.dart';
+import 'package:flutter_pinterestclone/screen/base/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -12,21 +12,22 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
     implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
 
-  final ScrollController _controller = ScrollController();
+  final PageStorageKey? key;
+
+  HomeScreen({this.key});
 
   @override
   void onCreate() {
     super.onCreate();
     setRefreshable(true);
     setBackgroundColor(Colors.white);
-
-    _controller.addListener(paginationListener);
+    setStateKey(key);
   }
 
-  void paginationListener() async {
-    if (_controller.offset == _controller.position.maxScrollExtent) {
-      await viewModel?.loadData();
-    }
+  @override
+  void didHomePageListEnd() async {
+    super.didHomePageListEnd();
+    await viewModel?.loadData();
   }
 
   @override
@@ -35,8 +36,9 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.count(
+      //key: const PageStorageKey("home_page_list"),
       crossAxisCount: 2,
-      controller: _controller,
+      controller: homePageListController,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,
@@ -66,11 +68,5 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
         );
       },
     );
-  }
-
-  @override
-  void onDestroy() {
-    //_controller.removeListener(paginationListener);
-    super.onDestroy();
   }
 }

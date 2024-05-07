@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 
 class ErrorMessageWidget extends StatelessWidget {
   Message? message;

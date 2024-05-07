@@ -8,6 +8,7 @@ import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/main_viewmodel/main_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
+import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 
 class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
     implements HomeScreenViewModel {

@@ -55,7 +55,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   Future<void> onRefresh() async {}
 
   void onCreate() {
-    viewModel?.onCreate();
     if (_viewModel == null) {
       _viewModel = ViewModelProvider.of(this).get(V) as Vm?;
       _viewModel?.onCreate();
@@ -123,7 +122,13 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   }
 }
 
-class _MyScreenState extends State<MyScreen> {
+class _MyScreenState extends State<MyScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.setContext(context);
@@ -137,6 +142,8 @@ class _MyScreenState extends State<MyScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     widget.onDestroy();
     super.dispose();
   }

@@ -27,9 +27,6 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
     CupertinoIcons.profile_circled,
   ];
 
-  late HomeScreen homeScreen = HomeScreen();
-  late SearchScreen searchScreen = SearchScreen();
-
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
@@ -68,14 +65,14 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
   Widget currentPage() {
     switch (viewModel?.currentIndex) {
       case SEARCH_SCREEN:
-        return searchScreen;
+        return SearchScreen();
       case MESSAGE_SCREEN:
         return Container();
       case PROFILE_SCREEN:
         return Container();
       case HOME_SCREEN:
       default:
-        return homeScreen;
+        return HomeScreen();
     }
   }
 }

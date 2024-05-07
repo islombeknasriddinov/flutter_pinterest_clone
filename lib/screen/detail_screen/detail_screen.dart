@@ -40,23 +40,23 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Hero(
-        tag: arg.photoHome.id,
-        child: CachedNetworkImage(
-          imageUrl: arg.photoHome.urls?.full ?? "",
-          placeholder: (ctx, widget) => CachedNetworkImage(
-            imageUrl: arg.photoHome.urls?.smallS3 ?? "",
-            errorWidget: (ctx, error, st) {
-              viewModel?.setErrorMessage(Message.error(messageText: error));
+    return Column(
+      children: [
+        Hero(
+          tag: arg.photoHome.id,
+          child: CachedNetworkImage(
+            imageUrl: arg.photoHome.urls?.full ?? "",
+            placeholder: (ctx, widget) => CachedNetworkImage(
+              imageUrl: arg.photoHome.urls?.smallS3 ?? "",
+              errorWidget: (ctx, error, st) {
+                viewModel?.setErrorMessage(Message.error(messageText: error));
 
-              return Container();
-            },
+                return Container();
+              },
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

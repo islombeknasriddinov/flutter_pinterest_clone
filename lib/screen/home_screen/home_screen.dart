@@ -17,7 +17,6 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
   @override
   void onCreate() {
     super.onCreate();
-
     setRefreshable(true);
     setBackgroundColor(Colors.white);
 
@@ -25,15 +24,13 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
   }
 
   void paginationListener() async {
-    if (_controller.offset == _controller.position.maxScrollExtent - 20) {
+    if (_controller.offset == _controller.position.maxScrollExtent) {
       await viewModel?.loadData();
     }
   }
 
   @override
-  Future<void> onRefresh() async {
-    await viewModel?.refreshData();
-  }
+  Future<void> onRefresh() => viewModel!.refreshData();
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
@@ -73,7 +70,7 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
 
   @override
   void onDestroy() {
-    _controller.removeListener(paginationListener);
+    //_controller.removeListener(paginationListener);
     super.onDestroy();
   }
 }

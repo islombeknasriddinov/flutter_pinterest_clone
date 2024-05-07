@@ -31,7 +31,7 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
   }
 
   void timeCounter() {
-    Future.delayed(const Duration(seconds: 5)).then((value) {
+    Future.delayed(const Duration(milliseconds: 300)).then((value) {
       MainScreen.replace(getContext());
     });
   }

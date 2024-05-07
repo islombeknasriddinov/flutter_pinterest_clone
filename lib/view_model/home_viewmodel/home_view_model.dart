@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/network/network_manager.dart';
-import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/common/log.dart';
+import 'package:flutter_pinterestclone/network/network_manager.dart';
+import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/main_viewmodel/main_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
 
 class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
     implements HomeScreenViewModel {
@@ -18,9 +18,10 @@ class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
   @override
   List<PhotoHome> get items => _list;
 
-  HomeScreenViewModelImpl(HomeScreenView view, this.networkManager) : super(view);
+  HomeScreenViewModelImpl(HomeScreenView view, this.networkManager)
+      : super(view);
 
-  var subscription;
+  StreamSubscription<ConnectivityResult>? subscription;
 
   int _page = 1;
 
@@ -29,8 +30,9 @@ class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
     super.onCreate();
     _apiPhotoList(_page);
 
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
+    subscription = Connectivity().onConnectivityChanged.listen((result) {
+      if ((result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi)) {
         _apiPhotoList(_page);
       }
     });
@@ -57,7 +59,8 @@ class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
       final result = await Connectivity().checkConnectivity();
 
       if (result == ConnectivityResult.none) {
-        setErrorMessage(Message.error(messageText: "Подключение к интернету прервано"));
+        setErrorMessage(
+            Message.error(messageText: "Подключение к интернету прервано"));
         return;
       }
 
@@ -77,8 +80,8 @@ class HomeScreenViewModelImpl extends MainScreenViewModelImpl<HomeScreenView>
 
   @override
   void onDestroy() {
-    subscription.cancel();
-
+    print("@@@");
+    subscription?.cancel();
     super.onDestroy();
   }
 }

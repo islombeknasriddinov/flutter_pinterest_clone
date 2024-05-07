@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 
 abstract class ViewModel extends ChangeNotifier {}
 

@@ -27,8 +27,31 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
     CupertinoIcons.profile_circled,
   ];
 
-  late HomeScreen homeScreen = HomeScreen();
+  final PageController pageViewController = PageController();
+  final ScrollController homePageListController = ScrollController();
+
+  final PageStorageBucket homeBucket = PageStorageBucket();
+  final PageStorageKey homePageKey = const PageStorageKey("home_page_key");
+
+  late PageStorage homeScreen =
+  PageStorage(bucket: homeBucket, child: HomeScreen(key: homePageKey));
   late SearchScreen searchScreen = SearchScreen();
+
+  @override
+  void onCreate() {
+    super.onCreate();
+    homePageListController.addListener(paginationListener);
+  }
+
+  void paginationListener() async {
+    print("paginationListener");
+    if (homePageListController.offset == homePageListController.position.maxScrollExtent) {
+      print("didHomePageListEnd");
+      didHomePageListEnd();
+    }
+  }
+
+  void didHomePageListEnd() {}
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
@@ -47,7 +70,11 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
                 items: getBottomNavigationBarItems(),
                 activeColor: Colors.black,
                 inactiveColor: Colors.black54,
-                onTap: (int index) => viewModel?.setCurrentIndex(index),
+                onTap: (int index) {
+                  PageStorage.of(getContext())
+                      .writeState(getContext(), homeScreen, identifier: ValueKey(homePageKey));
+                  viewModel?.setCurrentIndex(index);
+                },
               ),
             ),
           ),
@@ -75,7 +102,16 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
         return Container();
       case HOME_SCREEN:
       default:
-        return homeScreen;
+        return (PageStorage.of(getContext())
+                .readState(getContext(), identifier: ValueKey(homePageKey)) ??
+            HomeScreen()) as Widget;
     }
+  }
+
+  @override
+  void onDestroy() {
+    print("onDestroy");
+    homePageListController.removeListener(paginationListener);
+    super.onDestroy();
   }
 }

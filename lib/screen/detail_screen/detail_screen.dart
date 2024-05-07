@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
-import 'package:flutter_pinterestclone/screen/.base/bean/message.dart';
+import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';

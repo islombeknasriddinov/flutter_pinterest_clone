@@ -19,6 +19,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   bool _refreshable = false;
   bool _scrollable = false;
   Color? _backgroundColor;
+  PageStorageKey? _stateKey;
 
   @override
   State<MyScreen> createState() => _MyScreenState();
@@ -52,6 +53,10 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
     _backgroundColor = color;
   }
 
+  void setStateKey(PageStorageKey? key){
+    _stateKey = key;
+  }
+
   Future<void> onRefresh() async {}
 
   void onCreate() {
@@ -72,6 +77,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
   Widget build(BuildContext context) {
     return Scaffold(
+      //key: _stateKey,
       backgroundColor: _backgroundColor,
       appBar: buildAppBarWidget(context),
       persistentFooterButtons: buildPersistentFooterWidgets(context),

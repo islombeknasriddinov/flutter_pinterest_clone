@@ -12,16 +12,11 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
     implements HomeScreenView {
   static const String ROUTE_NAME = "home_screen";
 
-  final PageStorageKey? key;
-
-  HomeScreen({this.key});
-
   @override
   void onCreate() {
     super.onCreate();
     setRefreshable(true);
     setBackgroundColor(Colors.white);
-    setStateKey(key);
   }
 
   @override
@@ -36,9 +31,9 @@ class HomeScreen extends MainScreen<HomeScreenViewModel, HomeScreenView>
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.count(
-      //key: const PageStorageKey("home_page_list"),
+      key: PageStorageKey("home_page_list"),
       crossAxisCount: 2,
-      controller: homePageListController,
+      controller: viewModel?.homePageListController,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,

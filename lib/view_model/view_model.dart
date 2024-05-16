@@ -24,6 +24,8 @@ abstract class MainScreenViewModel extends MyViewModel {
 
   int get currentIndex;
 
+  ScrollController get homePageListController;
+
   void setCurrentIndex(int index);
 }
 

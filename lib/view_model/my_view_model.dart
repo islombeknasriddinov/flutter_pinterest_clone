@@ -1,6 +1,6 @@
+import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 
 abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   final V view;
@@ -11,6 +11,9 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
 
   @override
   void onCreate() {}
+
+  @override
+  void initListeners() {}
 
   @override
   bool get isLoading => _isLoading;
@@ -34,6 +37,7 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
     notifyListeners();
   }
 
+  @override
   void setErrorMessage(Message newMessage) {
     _message = newMessage;
   }

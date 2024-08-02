@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
+import 'package:flutter_pinterestclone/widget/circular_bottom_indicator.dart';
 import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
 import 'package:flutter_pinterestclone/widget/error_message_widget.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   Vm? _viewModel;
   bool _refreshable = false;
   bool _scrollable = false;
+  bool _hasCircularBottomIndicatorEnable = false;
   Color? _backgroundColor;
   PageStorageKey? _stateKey;
 
@@ -49,6 +51,10 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
     _scrollable = scrollable;
   }
 
+  void setCircularBottomIndicator(bool value) {
+    _hasCircularBottomIndicatorEnable = value;
+  }
+
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
   }
@@ -66,6 +72,12 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
     }
   }
 
+  void didUpdateWidget(covariant MyScreen oldWidget) {}
+
+  void initListeners() {
+    viewModel?.initListeners();
+  }
+
   void onDestroy() {
     viewModel?.onDestroy();
   }
@@ -76,7 +88,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
   Widget build(BuildContext context) {
     return Scaffold(
-      //key: _stateKey,
       backgroundColor: _backgroundColor,
       appBar: buildAppBarWidget(context),
       persistentFooterButtons: buildPersistentFooterWidgets(context),
@@ -100,7 +111,9 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
                       Expanded(child: bodyWidget)
                     ],
                   ),
-                  CircularIndicatorWidget(model.isLoading),
+                  !_hasCircularBottomIndicatorEnable
+                      ? CircularIndicatorWidget(model.isLoading)/**/
+                      : CircularBottomIndicator(model.isLoading),
                 ],
               );
 
@@ -143,7 +156,16 @@ class _MyScreenState extends State<MyScreen> with WidgetsBindingObserver {
       widget.onCreate();
     }
 
+    widget.initListeners();
+
     return widget.build(context);
+  }
+
+  @override
+  void didUpdateWidget(covariant MyScreen<MyViewModel, View> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.didUpdateWidget(oldWidget);
+    widget.initListeners();
   }
 
   @override

@@ -15,26 +15,31 @@ abstract class MyViewModel extends ViewModel {
 
   void onDestroy();
 
+  void initListeners();
+
   void setErrorMessage(Message newMessage);
 }
 
 abstract class SplashScreenViewModel extends MyViewModel {}
 
 abstract class MainScreenViewModel extends MyViewModel {
+  List<PhotoHome> get items;
 
   int get currentIndex;
 
-  ScrollController get homePageListController;
-
-  void setCurrentIndex(int index);
-}
-
-abstract class HomeScreenViewModel extends MainScreenViewModel {
-  List<PhotoHome> get items;
+  double get position;
 
   Future<void> loadData();
 
   Future<void> refreshData();
+
+  void setCurrentIndex(int index);
+
+  void setScrollOffset(double index);
+}
+
+abstract class HomeScreenViewModel extends MainScreenViewModel {
+
 }
 
 abstract class SearchScreenViewModel extends MyViewModel {}

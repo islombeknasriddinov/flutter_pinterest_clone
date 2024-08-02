@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
-import 'package:flutter_pinterestclone/screen/home_screen/home_screen.dart';
+import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
+import 'package:flutter_pinterestclone/widget/home_photos_widget.dart';
 
 class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
     extends MyScreen<Vm, V> implements MainScreenView {
@@ -33,25 +34,19 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
   @override
   void onCreate() {
     super.onCreate();
-    _pages.addAll([
-      HomeScreen(),
-      SearchScreen(),
-      Container(),
-      Container(),
-    ]);
+    setRefreshable(true);
+    setBackgroundColor(Colors.white);
+    setCircularBottomIndicator(true);
   }
 
   @override
-  void didHomePageListEnd() {
-
-  }
+  Future<void> onRefresh() => viewModel!.refreshData();
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
       children: [
-        //currentPage(),
-        _pages[viewModel!.currentIndex],
+        currentPage(),
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -65,9 +60,6 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
                 activeColor: Colors.black,
                 inactiveColor: Colors.black54,
                 onTap: (int index) {
-/*                  PageStorage.of(getContext()).writeState(
-                      getContext(), homeScreen,
-                      identifier: ValueKey(homePageKey));*/
                   viewModel?.setCurrentIndex(index);
                 },
               ),
@@ -87,19 +79,25 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
     return items;
   }
 
-/*  Widget currentPage() {
+  Widget currentPage() {
     switch (viewModel?.currentIndex) {
       case SEARCH_SCREEN:
-        return searchScreen;
+        return SearchScreen();
       case MESSAGE_SCREEN:
         return Container();
       case PROFILE_SCREEN:
         return Container();
       case HOME_SCREEN:
       default:
-        return (PageStorage.of(getContext())
-                .readState(getContext(), identifier: ValueKey(homePageKey)) ??
-            HomeScreen()) as Widget;
+        return HomePhotosWidget(
+          items: viewModel?.items ?? [],
+          controller: ScrollController(
+              initialScrollOffset: viewModel?.position ?? 0, keepScrollOffset: false),
+          position: viewModel?.position ?? 0,
+          didEndScrollPosition: () async => await viewModel?.loadData(),
+          scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
+          onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
+        );
     }
-  }*/
+  }
 }

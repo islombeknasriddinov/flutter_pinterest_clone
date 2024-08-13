@@ -6,4 +6,10 @@ class Logger {
       print("Error : $e \n stacktrace : $st");
     }
   }
+
+  static void p(Object? object) {
+    if (kDebugMode) {
+      print(object);
+    }
+  }
 }

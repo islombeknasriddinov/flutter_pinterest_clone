@@ -39,15 +39,8 @@ class PhotoItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(18.0),
           child: CachedNetworkImage(
             imageUrl: photoHome.urls?.smallS3 ?? "",
-            progressIndicatorBuilder: (ctx, url, progress) => Stack(
-              children: [
-                Image.asset(Assets.photoNotFound),
-                //const CircularIndicatorWidget(true),
-              ],
-            ),
-            //placeholder: (context, url) => Image.asset(Assets.photoNotFound),
-            errorWidget: (context, url, error) =>
-                Image.asset(Assets.photoNotFound),
+            placeholder: (context, url) => Image.asset(Assets.photoNotFound),
+            errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
           ),
         ),
         onTap: () => onTapItem?.call(photoHome),
@@ -80,7 +73,10 @@ class PhotoItemWidget extends StatelessWidget {
   }
 
   Widget _buildDescriptionWidget() {
-    String? description = photoHome.description;
+    String? description = photoHome.description ??
+        photoHome.altDescription ??
+        photoHome.user?.username ??
+        photoHome.user?.firstName;
 
     if (description == null) return Expanded(child: Container());
 

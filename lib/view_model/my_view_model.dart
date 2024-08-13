@@ -38,7 +38,7 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   }
 
   @override
-  void setErrorMessage(Message newMessage) {
-    _message = newMessage;
+  void setErrorMessage(dynamic error, [dynamic st]) {
+    _message = Message.error(messageText: error.toString());
   }
 }

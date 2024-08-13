@@ -9,8 +9,8 @@ class HomePhotosWidget extends StatefulWidget {
   final ScrollController? controller;
   final double? position;
   final OnTapPhotoItem? onTapItem;
-  final Function()? didEndScrollPosition;
-  final Function(double scrollOffset)? scrollOffset;
+  final VoidCallback? didEndScrollPosition;
+  final void Function(double scrollOffset)? scrollOffset;
 
   HomePhotosWidget({
     required this.items,
@@ -37,6 +37,16 @@ class _HomePhotosWidgetState extends State<HomePhotosWidget> {
     controller.addListener(paginationListener);
 
     _pos = widget.position ?? 0;
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (_pos != 0) {
+        controller.animateTo(
+          _pos,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   void paginationListener() async {
@@ -44,12 +54,6 @@ class _HomePhotosWidgetState extends State<HomePhotosWidget> {
 
     if (controller.offset == controller.position.maxScrollExtent) {
       widget.didEndScrollPosition?.call();
-    }
-
-    if (_pos != 0) {
-      print("@@@ _pos ${_pos}");
-      controller.jumpTo(_pos);
-      _pos = 0;
     }
   }
 

@@ -8,18 +8,18 @@ class Message {
   final Color backgroundColor;
 
   Message.error({required this.messageText})
-      : this.messageTextColor = Colors.white,
-        this.backgroundColor = Colors.red;
+      : messageTextColor = Colors.white,
+        backgroundColor = Colors.red;
 
   Message.success({required this.messageText})
-      : this.messageTextColor = Colors.white,
-        this.backgroundColor = Colors.green;
+      : messageTextColor = Colors.white,
+        backgroundColor = Colors.green;
 
   Message.info({required this.messageText})
-      : this.messageTextColor = Colors.black54,
-        this.backgroundColor = Colors.white;
+      : messageTextColor = Colors.black54,
+        backgroundColor = Colors.white;
 
   Message.warning({required this.messageText})
-      : this.messageTextColor = Colors.white,
-        this.backgroundColor = Colors.orange;
+      : messageTextColor = Colors.white,
+        backgroundColor = Colors.orange;
 }

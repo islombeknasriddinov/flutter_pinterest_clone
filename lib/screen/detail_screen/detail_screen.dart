@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
-import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -23,17 +22,8 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
     implements DetailScreenView {
   static const String ROUTE_NAME = "detail_screen";
 
-  static open<T>(
-    BuildContext context,
-    ArgDetailScreen arg, {
-    Function(T result)? onPopResult,
-  }) {
-    ScreenManager.openRoute(
-      context,
-      ROUTE_NAME,
-      arg: arg,
-      onPopResult: onPopResult,
-    );
+  static open<T>(BuildContext context, ArgDetailScreen arg, {Function(T result)? onPopResult}) {
+    ScreenManager.openRoute(context, ROUTE_NAME, arg: arg, onPopResult: onPopResult);
   }
 
   ArgDetailScreen get arg => getArgument<ArgDetailScreen>()!;
@@ -49,7 +39,7 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
             placeholder: (ctx, widget) => CachedNetworkImage(
               imageUrl: arg.photoHome.urls?.smallS3 ?? "",
               errorWidget: (ctx, error, st) {
-                viewModel?.setErrorMessage(Message.error(messageText: error));
+                viewModel?.setErrorMessage(error, st);
 
                 return Container();
               },

@@ -28,9 +28,6 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
     CupertinoIcons.profile_circled,
   ];
 
-  final List<Widget> _pages = [];
-
-
   @override
   void onCreate() {
     super.onCreate();
@@ -91,8 +88,7 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
       default:
         return HomePhotosWidget(
           items: viewModel?.items ?? [],
-          controller: ScrollController(
-              initialScrollOffset: viewModel?.position ?? 0, keepScrollOffset: false),
+          controller: ScrollController(),
           position: viewModel?.position ?? 0,
           didEndScrollPosition: () async => await viewModel?.loadData(),
           scrollOffset: (offset) => viewModel?.setScrollOffset(offset),

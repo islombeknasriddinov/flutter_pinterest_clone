@@ -9,7 +9,6 @@ class PhotoHome {
     }
   }
 
-
   String id;
   String? createdAt;
   String? updatedAt;
@@ -270,14 +269,15 @@ class UserLinks {
   String? following;
   String? followers;
 
-  UserLinks(
-      {this.self,
-      this.html,
-      this.photos,
-      this.likes,
-      this.portfolio,
-      this.following,
-      this.followers});
+  UserLinks({
+    this.self,
+    this.html,
+    this.photos,
+    this.likes,
+    this.portfolio,
+    this.following,
+    this.followers,
+  });
 
   UserLinks.fromJson(Map<String, dynamic> json) {
     self = json['self'];

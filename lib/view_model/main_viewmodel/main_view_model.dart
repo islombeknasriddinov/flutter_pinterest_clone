@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/network/network_manager.dart';
-import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/my_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -36,12 +35,12 @@ class MainScreenViewModelImpl<T extends MainScreenView> extends MyViewModelImpl<
   void onCreate() {
     super.onCreate();
 
-    subscription = Connectivity().onConnectivityChanged.listen((result) {
+/*    subscription = Connectivity().onConnectivityChanged.listen((result) {
       if ((result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) &&
           _list.isEmpty) {
         _apiPhotoList(_page);
       }
-    });
+    });*/
 
     _apiPhotoList(_page);
   }
@@ -67,7 +66,7 @@ class MainScreenViewModelImpl<T extends MainScreenView> extends MyViewModelImpl<
       final result = await Connectivity().checkConnectivity();
 
       if (result == ConnectivityResult.none) {
-        setErrorMessage(Message.error(messageText: "Подключение к интернету прервано"));
+        setErrorMessage("Подключение к интернету прервано");
         return;
       }
 
@@ -79,7 +78,7 @@ class MainScreenViewModelImpl<T extends MainScreenView> extends MyViewModelImpl<
       }
     } catch (e, st) {
       Logger.e(e, st);
-      setErrorMessage(Message.error(messageText: e.toString()));
+      setErrorMessage(e, st);
     } finally {
       if (withProgress == true) setProgress(false);
     }
@@ -95,8 +94,6 @@ class MainScreenViewModelImpl<T extends MainScreenView> extends MyViewModelImpl<
 
   @override
   void setScrollOffset(double offset) {
-    print("@@@@ ${offset}");
-
     _position = offset;
   }
 

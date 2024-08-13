@@ -17,7 +17,7 @@ abstract class MyViewModel extends ViewModel {
 
   void initListeners();
 
-  void setErrorMessage(Message newMessage);
+  void setErrorMessage(dynamic error, [String st]);
 }
 
 abstract class SplashScreenViewModel extends MyViewModel {}

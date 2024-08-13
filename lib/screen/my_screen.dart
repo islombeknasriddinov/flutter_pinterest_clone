@@ -21,7 +21,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   bool _scrollable = false;
   bool _hasCircularBottomIndicatorEnable = false;
   Color? _backgroundColor;
-  PageStorageKey? _stateKey;
 
   @override
   State<MyScreen> createState() => _MyScreenState();
@@ -59,10 +58,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
     _backgroundColor = color;
   }
 
-  void setStateKey(PageStorageKey? key){
-    _stateKey = key;
-  }
-
   Future<void> onRefresh() async {}
 
   void onCreate() {
@@ -72,7 +67,14 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
     }
   }
 
-  void didUpdateWidget(covariant MyScreen oldWidget) {}
+  void didUpdateWidget(covariant MyScreen oldWidget) {
+    this._context = oldWidget._context;
+    this._viewModel = oldWidget._viewModel as Vm?;
+    this._refreshable = oldWidget._refreshable;
+    this._scrollable = oldWidget._scrollable;
+    this._hasCircularBottomIndicatorEnable = oldWidget._hasCircularBottomIndicatorEnable;
+    this._backgroundColor = oldWidget._backgroundColor;
+  }
 
   void initListeners() {
     viewModel?.initListeners();
@@ -112,7 +114,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
                     ],
                   ),
                   !_hasCircularBottomIndicatorEnable
-                      ? CircularIndicatorWidget(model.isLoading)/**/
+                      ? CircularIndicatorWidget(model.isLoading)
                       : CircularBottomIndicator(model.isLoading),
                 ],
               );

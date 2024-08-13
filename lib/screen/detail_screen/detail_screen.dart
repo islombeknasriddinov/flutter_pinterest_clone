@@ -1,17 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-
-class My extends State<StatefulWidget> with SingleTickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
 
 class ArgDetailScreen extends MyArgument {
   static const String ARG_DETAIL = "arg_detail";
@@ -42,9 +35,6 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   @override
   void onCreate() {
     super.onCreate();
-    print("@@@ ${controller.hashCode}");
-
-    transformationController = TransformationController();
     _animationController = AnimationController(
       vsync: getVsync(),
       duration: const Duration(milliseconds: 300),
@@ -54,33 +44,20 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   }
 
   Matrix4 _applyZoom() {
-    final tapPosition = _doubleTapDetails!.localPosition;
+    final tapPosition = _doubleTapDetails.localPosition;
     final zoomed = Matrix4.identity()
-      ..translate(
-        -tapPosition.dx * 2,
-        -tapPosition.dy * 2,
-      )
+      ..translate(-tapPosition.dx * 2, -tapPosition.dy * 2)
       ..scale(3.0);
     return zoomed;
   }
 
   Matrix4 _revertZoom() => Matrix4.identity();
 
-  TextEditingController controller = TextEditingController();
-
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: controller,
-        ),
-        BackButton(
-          onPressed: () {
-            ScreenManager.popUpRoute(getContext());
-          },
-        )
-        /*Hero(
+        Hero(
           tag: arg.photoHome.id,
           child: GestureDetector(
             onDoubleTapDown: (p) => _doubleTapDetails = p,
@@ -104,12 +81,12 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
                     viewModel?.setErrorMessage(error, st);
 
                     return Container();
-                      },
-                    ),
+                  },
+                ),
               ),
             ),
           ),
-        ),*/
+        ),
       ],
     );
   }

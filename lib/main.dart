@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/screen/base/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
+import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/splash_screen/splash_screen.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
     ViewModelProvider.init();
 
     return MaterialApp(
-      home: SplashScreen(),
       initialRoute: SplashScreen.ROUTE_NAME,
       routes: getRoutes(),
     );
@@ -39,8 +38,21 @@ class MyApp extends StatelessWidget {
     };
   }
 
-  WidgetBuilder screenBuilder(Widget screen, String routeName) {
-    Logger.p("Opened Screen: $routeName");
-    return (context) => screen;
+  WidgetBuilder screenBuilder(MyScreen screen, String routeName) {
+    return (context) => MyStateBuilder(screen);
+  }
+
+  static MyScreen getNewState(MyScreen screen){
+    if (screen is MainScreen) {
+      return MainScreen();
+    } else if (screen is SearchScreen) {
+      return SearchScreen();
+    } else if (screen is DetailScreen) {
+      return DetailScreen();
+    } else if (screen is SplashScreen) {
+      return SplashScreen();
+    } else {
+      throw Exception("Un implemented screen");
+    }
   }
 }

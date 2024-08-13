@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
-import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/widget/home_photos_widget.dart';
 
-class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
-    extends MyScreen<Vm, V> implements MainScreenView {
+class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView> extends MyScreen<Vm, V>
+    implements MainScreenView {
   static const String ROUTE_NAME = "main_screen";
 
   static replace(BuildContext context) {
@@ -79,7 +78,7 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView>
   Widget currentPage() {
     switch (viewModel?.currentIndex) {
       case SEARCH_SCREEN:
-        return SearchScreen();
+        return Container();
       case MESSAGE_SCREEN:
         return Container();
       case PROFILE_SCREEN:

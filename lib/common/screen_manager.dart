@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 
-class Bundle {
-
-}
+class Bundle {}
 
 class ScreenManager {
   static void replaceRoute<R>(BuildContext ctx, String content, {R? arg}) {
@@ -18,4 +16,6 @@ class ScreenManager {
   }) {
     Navigator.pushNamed<R>(ctx, content, arguments: arg);
   }
+
+  static void popUpRoute(BuildContext context) => Navigator.pop(context);
 }

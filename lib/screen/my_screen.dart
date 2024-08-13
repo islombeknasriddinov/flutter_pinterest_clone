@@ -21,6 +21,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   bool _scrollable = false;
   bool _hasCircularBottomIndicatorEnable = false;
   Color? _backgroundColor;
+  TickerProvider? _tickerProvider;
 
   @override
   State<MyScreen> createState() => _MyScreenState();
@@ -37,6 +38,8 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
     return myArgument.arg()[myArgument.argKey] as T;
   }
+
+  TickerProvider getVsync() => _tickerProvider!;
 
   void setContext(BuildContext context) {
     _context = context;
@@ -56,6 +59,10 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
 
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
+  }
+
+  void setVsync(TickerProvider tickerProvider) {
+    _tickerProvider = tickerProvider;
   }
 
   Future<void> onRefresh() async {}
@@ -143,21 +150,20 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View>
   }
 }
 
-class _MyScreenState extends State<MyScreen> with WidgetsBindingObserver {
+class _MyScreenState extends State<MyScreen>
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    widget.setVsync(this);
   }
 
   @override
   Widget build(BuildContext context) {
     widget.setContext(context);
 
-    if (widget.viewModel == null) {
-      widget.onCreate();
-    }
-
+    widget.onCreate();
     widget.initListeners();
 
     return widget.build(context);

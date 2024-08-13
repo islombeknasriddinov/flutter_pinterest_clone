@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/common/assets.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 
 class PhotoItemWidget extends StatelessWidget {
@@ -39,8 +38,9 @@ class PhotoItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(18.0),
           child: CachedNetworkImage(
             imageUrl: photoHome.urls?.smallS3 ?? "",
-            placeholder: (context, url) => Image.asset(Assets.photoNotFound),
-            errorWidget: (context, url, error) => Image.asset(Assets.photoNotFound),
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            useOldImageOnUrlChange: true,
           ),
         ),
         onTap: () => onTapItem?.call(photoHome),

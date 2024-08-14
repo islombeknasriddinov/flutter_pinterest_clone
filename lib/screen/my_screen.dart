@@ -24,7 +24,7 @@ class MyStateBuilder extends StatefulWidget {
 }
 
 class _MyStateBuilderState extends State<MyStateBuilder>
-    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   final MyScreen screen;
 
   _MyStateBuilderState(this.screen);
@@ -49,6 +49,7 @@ class _MyStateBuilderState extends State<MyStateBuilder>
   @override
   void didUpdateWidget(covariant MyStateBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     screen.didUpdateWidgets(screen);
     screen.initListeners();
   }
@@ -125,6 +126,7 @@ class MyScreen<Vm extends MyViewModel, V extends View> implements View {
     this._scrollable = oldWidget._scrollable;
     this._hasCircularBottomIndicatorEnable = oldWidget._hasCircularBottomIndicatorEnable;
     this._backgroundColor = oldWidget._backgroundColor;
+    this._tickerProvider = oldWidget._tickerProvider;
   }
 
   void initListeners() {

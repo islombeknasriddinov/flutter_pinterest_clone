@@ -62,7 +62,7 @@ class _HomePhotosWidgetState extends State<HomePhotosWidget> {
     return MasonryGridView.count(
       crossAxisCount: 2,
       controller: controller,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,
       itemCount: widget.items.length,

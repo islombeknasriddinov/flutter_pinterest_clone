@@ -31,20 +31,31 @@ class PhotoItemWidget extends StatelessWidget {
   }
 
   Widget _buildPhotoWidget() {
-    return Hero(
-      tag: photoHome.id,
-      child: GestureDetector(
+    return GestureDetector(
+      child: Hero(
+        tag: photoHome.id,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18.0),
           child: CachedNetworkImage(
             imageUrl: photoHome.urls?.smallS3 ?? "",
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(value: downloadProgress.progress),
-            useOldImageOnUrlChange: true,
+            placeholder: (context, url) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(18.0),
+                child: AnimatedContainer(
+                  height: 200,
+                  width: double.infinity,
+                  color: Colors.white,
+                  duration: const Duration(milliseconds: 300),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        onTap: () => onTapItem?.call(photoHome),
       ),
+      onTap: () => onTapItem?.call(photoHome),
     );
   }
 

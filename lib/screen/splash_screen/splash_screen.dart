@@ -10,10 +10,30 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
     implements SplashScreenView {
   static const String ROUTE_NAME = "splash_screen";
 
+  AnimationController? controller;
+
   @override
   void onCreate() {
     super.onCreate();
-    timeCounter();
+    controller = AnimationController(
+      vsync: getVsync(),
+      duration: const Duration(seconds: 3),
+    );
+
+    controller?.addStatusListener(statusListener);
+  }
+
+  void statusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {}
+  }
+
+  @override
+  PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
+    return AppBar(
+      backgroundColor: const Color.fromARGB(255, 223, 26, 37),
+      primary: true,
+      elevation: 0,
+    );
   }
 
   @override
@@ -24,15 +44,25 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
           width: double.maxFinite,
           height: double.maxFinite,
           color: const Color.fromARGB(255, 223, 26, 37),
-          child: Lottie.asset(AssetManager.splashScreenAnim),
+          child: Lottie.asset(
+            AssetManager.splashScreenAnim,
+            controller: controller,
+            repeat: false,
+            onLoaded: (composition) {
+              controller!
+                ..duration = composition.duration
+                ..forward().whenComplete(() => MainScreen.replace(getContext()));
+            },
+          ),
         ),
       ),
     );
   }
 
-  void timeCounter() {
-    Future.delayed(const Duration(milliseconds: 300)).then((value) {
-      MainScreen.replace(getContext());
-    });
+  @override
+  void onDestroy() {
+    controller?.removeStatusListener(statusListener);
+    controller?.dispose();
+    super.onDestroy();
   }
 }

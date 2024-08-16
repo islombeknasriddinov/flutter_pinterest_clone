@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/main.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -12,55 +11,6 @@ abstract class MyArgument {
   String get argKey;
 
   Map<String, dynamic> arg() => {argKey: this};
-}
-
-class MyStateBuilder extends StatefulWidget {
-  final MyScreen _screen;
-
-  MyStateBuilder(MyScreen screen) : _screen = screen;
-
-  @override
-  State<MyStateBuilder> createState() => _MyStateBuilderState(MyApp.getNewState(_screen));
-}
-
-class _MyStateBuilderState extends State<MyStateBuilder>
-    with WidgetsBindingObserver, TickerProviderStateMixin {
-  final MyScreen screen;
-
-  _MyStateBuilderState(this.screen);
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    screen.setVsync(this);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    screen.setContext(context);
-
-    screen.onCreate();
-    screen.initListeners();
-
-    return screen.build(context);
-  }
-
-  @override
-  void didUpdateWidget(covariant MyStateBuilder oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    screen.didUpdateWidgets(screen);
-    screen.initListeners();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-
-    screen.onDestroy();
-    super.dispose();
-  }
 }
 
 class MyScreen<Vm extends MyViewModel, V extends View> implements View {

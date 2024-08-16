@@ -28,6 +28,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: routes.keys.first,
       routes: routes,
+      onUnknownRoute: (RouteSettings settings) {
+        throw Exception("Unsupported route: ${settings.name}");
+      },
     );
   }
 

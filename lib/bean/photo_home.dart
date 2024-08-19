@@ -3,7 +3,7 @@ import 'dart:convert';
 class PhotoHome {
   static List<PhotoHome> photoHomeListFromJson(String str) {
     if (str.isNotEmpty) {
-      return List.from(jsonDecode(str).map((e) => PhotoHome.fromJson(e)));
+      return (jsonDecode(str) as List<dynamic>).map((e) => PhotoHome.fromJson(e)).toList();
     } else {
       return [];
     }

@@ -33,6 +33,7 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView> exten
     setRefreshable(true);
     setBackgroundColor(Colors.white);
     setCircularBottomIndicator(true);
+    setWithSafeArea(false);
   }
 
   @override

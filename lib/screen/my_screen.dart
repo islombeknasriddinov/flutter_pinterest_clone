@@ -19,6 +19,7 @@ class MyScreen<Vm extends MyViewModel, V extends View> implements View {
   bool _refreshable = false;
   bool _scrollable = false;
   bool _hasCircularBottomIndicatorEnable = false;
+  bool _withSafeArea = true;
   Color? _backgroundColor;
   TickerProvider? _tickerProvider;
 
@@ -60,6 +61,10 @@ class MyScreen<Vm extends MyViewModel, V extends View> implements View {
     _tickerProvider = tickerProvider;
   }
 
+  void setWithSafeArea(bool value) {
+    _withSafeArea = value;
+  }
+
   Future<void> onRefresh() async {}
 
   void onCreate() {
@@ -92,48 +97,52 @@ class MyScreen<Vm extends MyViewModel, V extends View> implements View {
   }
 
   Widget build(BuildContext context) {
+    Widget body = ChangeNotifierProvider<Vm>.value(
+      value: viewModel!,
+      child: Consumer<Vm>(
+        builder: (_, model, child) {
+          Widget bodyWidget = onBuildBodyWidget(context);
+          if (_scrollable == true) {
+            bodyWidget = SingleChildScrollView(child: bodyWidget);
+          }
+          bodyWidget = Stack(
+            children: [
+              Column(
+                children: [
+                  ErrorMessageWidget(
+                    message: model.message,
+                    onTap: () => model.resetMessage(),
+                  ),
+                  Expanded(child: bodyWidget)
+                ],
+              ),
+              !_hasCircularBottomIndicatorEnable
+                  ? CircularIndicatorWidget(model.isLoading)
+                  : CircularBottomIndicator(model.isLoading),
+            ],
+          );
+
+          if (_refreshable == true) {
+            bodyWidget = RefreshIndicator(
+              onRefresh: onRefresh,
+              child: bodyWidget,
+            );
+          }
+
+          return bodyWidget;
+        },
+      ),
+    );
+
+    if (_withSafeArea) {
+      body = SafeArea(child: body);
+    }
+
     return Scaffold(
       backgroundColor: _backgroundColor,
       appBar: buildAppBarWidget(context),
       persistentFooterButtons: buildPersistentFooterWidgets(context),
-      body: SafeArea(
-        child: ChangeNotifierProvider<Vm>.value(
-          value: viewModel!,
-          child: Consumer<Vm>(
-            builder: (_, model, child) {
-              Widget bodyWidget = onBuildBodyWidget(context);
-              if (_scrollable == true) {
-                bodyWidget = SingleChildScrollView(child: bodyWidget);
-              }
-              bodyWidget = Stack(
-                children: [
-                  Column(
-                    children: [
-                      ErrorMessageWidget(
-                        message: model.message,
-                        onTap: () => model.resetMessage(),
-                      ),
-                      Expanded(child: bodyWidget)
-                    ],
-                  ),
-                  !_hasCircularBottomIndicatorEnable
-                      ? CircularIndicatorWidget(model.isLoading)
-                      : CircularBottomIndicator(model.isLoading),
-                ],
-              );
-
-              if (_refreshable == true) {
-                bodyWidget = RefreshIndicator(
-                  onRefresh: onRefresh,
-                  child: bodyWidget,
-                );
-              }
-
-              return bodyWidget;
-            },
-          ),
-        ),
-      ),
+      body: body,
     );
   }
 

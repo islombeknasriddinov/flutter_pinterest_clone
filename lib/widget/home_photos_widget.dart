@@ -65,9 +65,14 @@ class _HomePhotosWidgetState extends State<HomePhotosWidget> {
       padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,
-      itemCount: widget.items.length,
+      itemCount: widget.items.length + 2,
+      shrinkWrap: true,
       itemBuilder: (ctx, index) {
-        PhotoHome photoHome = widget.items[index];
+        if (index == 0 || index == 1) {
+          return Container(height: MediaQuery.of(context).padding.top);
+        }
+
+        PhotoHome photoHome = widget.items[index - 2];
 
         return PhotoItemWidget(photoHome: photoHome, onTapItem: widget.onTapItem);
       },

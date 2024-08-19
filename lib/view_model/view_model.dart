@@ -44,4 +44,7 @@ abstract class HomeScreenViewModel extends MainScreenViewModel {
 
 abstract class SearchScreenViewModel extends MyViewModel {}
 
-abstract class DetailScreenViewModel extends MyViewModel {}
+abstract class DetailScreenViewModel extends MyViewModel {
+  List<PhotoHome> get relatedPhotos;
+
+}

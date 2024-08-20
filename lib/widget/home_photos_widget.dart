@@ -58,6 +58,13 @@ class _HomePhotosWidgetState extends State<HomePhotosWidget> {
   }
 
   @override
+  void didUpdateWidget(covariant HomePhotosWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    print("@@@ didUpdateWidget");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MasonryGridView.count(
       crossAxisCount: 2,

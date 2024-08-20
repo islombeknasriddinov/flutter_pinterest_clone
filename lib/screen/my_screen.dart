@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/screen/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -13,7 +14,7 @@ abstract class MyArgument {
   Map<String, dynamic> arg() => {argKey: this};
 }
 
-class MyScreen<Vm extends MyViewModel, V extends View> implements View {
+abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View {
   BuildContext? _context;
   Vm? _viewModel;
   bool _refreshable = false;

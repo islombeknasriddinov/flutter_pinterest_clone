@@ -61,45 +61,70 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   Matrix4 _revertZoom() => Matrix4.identity();
 
   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          super.build(context),
+          Container(
+            height: kToolbarHeight * 2,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [BackButton(color: Colors.white)],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: MediaQuery.of(context).padding.top,
+          color: Colors.black,
         ),
         Stack(
           children: [
-            Hero(
-              tag: arg.photoHome.id,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-                child: GestureDetector(
-                  onDoubleTapDown: (p) => _doubleTapDetails = p,
-                  onDoubleTap: () {
-                    final newValue =
-                        transformationController.value.isIdentity() ? _applyZoom() : _revertZoom();
+            Container(
+              color: Colors.black,
+              child: Hero(
+                tag: arg.photoHome.id,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                  child: GestureDetector(
+                    onDoubleTapDown: (p) => _doubleTapDetails = p,
+                    onDoubleTap: () {
+                      final newValue = transformationController.value.isIdentity()
+                          ? _applyZoom()
+                          : _revertZoom();
 
-                    _zoomAnimation = Matrix4Tween(
-                      begin: transformationController.value,
-                      end: newValue,
-                    ).animate(CurveTween(curve: Curves.ease).animate(_animationController));
-                    _animationController.forward(from: 0);
-                  },
-                  child: InteractiveViewer(
-                    transformationController: transformationController,
-                    child: CachedNetworkImage(
-                      imageUrl: arg.photoHome.urls?.full ?? "",
-                      placeholder: (ctx, widget) => CachedNetworkImage(
-                        imageUrl: arg.photoHome.urls?.smallS3 ?? "",
-                        errorWidget: (ctx, error, st) {
-                          viewModel?.setErrorMessage(error, st);
+                      _zoomAnimation = Matrix4Tween(
+                        begin: transformationController.value,
+                        end: newValue,
+                      ).animate(CurveTween(curve: Curves.ease).animate(_animationController));
+                      _animationController.forward(from: 0);
+                    },
+                    child: InteractiveViewer(
+                      transformationController: transformationController,
+                      child: CachedNetworkImage(
+                        imageUrl: arg.photoHome.urls?.full ?? "",
+                        placeholder: (ctx, widget) => CachedNetworkImage(
+                          imageUrl: arg.photoHome.urls?.smallS3 ?? "",
+                          errorWidget: (ctx, error, st) {
+                            viewModel?.setErrorMessage(error, st);
 
-                          return Container();
-                        },
+                            return Container();
+                              },
+                            ),
                       ),
                     ),
                   ),
@@ -107,21 +132,12 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
               ),
             ),
             Container(
-              height: kToolbarHeight,
+              height: kToolbarHeight + 12,
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  tileMode: TileMode.decal,
-                  colors: [Colors.black12, Color(0x08000000)],
-                ),
-              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const BackButton(color: Colors.white),
                   IconButton(
                     icon: const Icon(Icons.more_horiz, size: 24, color: Colors.white),
                     onPressed: () {},
@@ -131,11 +147,9 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
             ),
           ],
         ),
-        Container(
-          child: HomePhotosWidget(
-            items: viewModel?.relatedPhotos ?? [],
-            onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
-          ),
+        HomePhotosWidget(
+          items: viewModel?.relatedPhotos ?? [],
+          onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
         ),
       ],
     );

@@ -5,7 +5,7 @@ import 'package:flutter_pinterestclone/common/screen_manager.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/widget/home_photos_widget.dart';
+import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 
 class ArgDetailScreen extends MyArgument {
   static const String ARG_DETAIL = "arg_detail";
@@ -61,11 +61,11 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   Matrix4 _revertZoom() => Matrix4.identity();
 
   @override
-  Widget build(BuildContext context) {
+  Widget onBuild(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          super.build(context),
+          super.onBuild(context),
           Container(
             height: kToolbarHeight * 2,
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -82,8 +82,9 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           height: MediaQuery.of(context).padding.top,
@@ -123,8 +124,8 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
                             viewModel?.setErrorMessage(error, st);
 
                             return Container();
-                              },
-                            ),
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -147,8 +148,7 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
             ),
           ],
         ),
-        HomePhotosWidget(
-          items: viewModel?.relatedPhotos ?? [],
+          HomePhotosComponent(
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
         ),
       ],

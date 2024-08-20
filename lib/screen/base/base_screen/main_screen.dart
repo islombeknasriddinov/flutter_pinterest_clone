@@ -5,10 +5,9 @@ import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/widget/home_photos_widget.dart';
+import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 
-class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView> extends MyScreen<Vm, V>
-    implements MainScreenView {
+class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implements MainScreenView {
   static const String ROUTE_NAME = "main_screen";
 
   static replace(BuildContext context) {
@@ -35,9 +34,6 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView> exten
     setCircularBottomIndicator(true);
     setWithSafeArea(false);
   }
-
-  @override
-  Future<void> onRefresh() => viewModel!.refreshData();
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
@@ -86,11 +82,9 @@ class MainScreen<Vm extends MainScreenViewModel, V extends MainScreenView> exten
         return Container();
       case HOME_SCREEN:
       default:
-        return HomePhotosWidget(
-          items: viewModel?.items ?? [],
+        return HomePhotosComponent(
           controller: ScrollController(),
           position: viewModel?.position ?? 0,
-          didEndScrollPosition: () async => await viewModel?.loadData(),
           scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
         );

@@ -1,6 +1,7 @@
 import 'package:flutter_pinterestclone/network/network_manager.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/detail_viewmodel/detail_viewmodel.dart';
+import 'package:flutter_pinterestclone/view_model/home_viewmodel/home_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/main_viewmodel/main_view_model.dart';
 import 'package:flutter_pinterestclone/view_model/search_viewmodel/search_viewmodel.dart';
 import 'package:flutter_pinterestclone/view_model/splash_viewmodel/splash_view_model.dart';
@@ -20,8 +21,7 @@ class ViewModelProvider<R extends ViewModel, T extends View> {
   static Future<void> init() async {
     register(
       SplashScreenView,
-      (view) =>
-          SplashScreenViewModelImpl(view as SplashScreenView, networkManager),
+      (view) => SplashScreenViewModelImpl(view as SplashScreenView, networkManager),
     );
     register(
       MainScreenView,
@@ -29,13 +29,15 @@ class ViewModelProvider<R extends ViewModel, T extends View> {
     );
     register(
       SearchScreenView,
-      (view) =>
-          SearchScreenViewModelImpl(view as SearchScreenView, networkManager),
+      (view) => SearchScreenViewModelImpl(view as SearchScreenView, networkManager),
     );
     register(
       DetailScreenView,
-      (view) =>
-          DetailScreenViewModelImpl(view as DetailScreenView, networkManager),
+      (view) => DetailScreenViewModelImpl(view as DetailScreenView, networkManager),
+    );
+    register(
+      HomePhotosComponentView,
+      (view) => HomePhotosComponentViewModelImpl(view as HomePhotosComponentView, networkManager),
     );
   }
 

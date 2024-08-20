@@ -11,3 +11,5 @@ abstract class SearchScreenView extends View {}
 abstract class DetailScreenView extends View {
   ArgDetailScreen get arg;
 }
+
+abstract class HomePhotosComponentView extends View {}

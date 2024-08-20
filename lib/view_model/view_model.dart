@@ -23,28 +23,27 @@ abstract class MyViewModel extends ViewModel {
 abstract class SplashScreenViewModel extends MyViewModel {}
 
 abstract class MainScreenViewModel extends MyViewModel {
-  List<PhotoHome> get items;
-
   int get currentIndex;
 
   double get position;
-
-  Future<void> loadData();
-
-  Future<void> refreshData();
 
   void setCurrentIndex(int index);
 
   void setScrollOffset(double index);
 }
 
-abstract class HomeScreenViewModel extends MainScreenViewModel {
-
-}
+abstract class HomeScreenViewModel extends MainScreenViewModel {}
 
 abstract class SearchScreenViewModel extends MyViewModel {}
 
 abstract class DetailScreenViewModel extends MyViewModel {
   List<PhotoHome> get relatedPhotos;
+}
 
+abstract class HomePhotosComponentViewModel extends MyViewModel {
+  List<PhotoHome> get items;
+
+  Future<void> loadData();
+
+  Future<void> refreshData();
 }

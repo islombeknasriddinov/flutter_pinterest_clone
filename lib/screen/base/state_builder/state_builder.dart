@@ -36,7 +36,9 @@ class _MyStateBuilderState extends State<MyStateBuilder>
     screen.onCreate();
     screen.initListeners();
 
-    return screen.onBuild(context);
+    try {
+      return screen.onBuildWidget(context);
+    } finally {}
   }
 
   @override

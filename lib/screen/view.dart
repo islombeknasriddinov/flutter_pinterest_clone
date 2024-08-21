@@ -12,4 +12,6 @@ abstract class DetailScreenView extends View {
   ArgDetailScreen get arg;
 }
 
-abstract class HomePhotosComponentView extends View {}
+abstract class HomePhotosComponentView extends View {
+  String? getPhotoId();
+}

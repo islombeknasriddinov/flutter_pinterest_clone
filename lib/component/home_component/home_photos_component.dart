@@ -9,19 +9,60 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, HomePhotosComponentView>
     implements HomePhotosComponentView {
-  final ScrollController controller;
-  final double? position;
+  final String? photoId;
+  final ScrollPhysics? physics;
+  final double Function()? position;
   final OnTapPhotoItem? onTapItem;
   final VoidCallback? didEndScrollPosition;
   final void Function(double scrollOffset)? scrollOffset;
 
-  HomePhotosComponent({
-    ScrollController? controller,
+  HomePhotosComponent._({
+    this.photoId,
     this.position,
     this.onTapItem,
     this.didEndScrollPosition,
     this.scrollOffset,
-  }) : controller = controller ?? ScrollController();
+    this.physics,
+  });
+
+  factory HomePhotosComponent.main({
+    double Function()? position,
+    OnTapPhotoItem? onTapItem,
+    VoidCallback? didEndScrollPosition,
+    void Function(double scrollOffset)? scrollOffset,
+    ScrollPhysics? physics,
+  }) {
+    return HomePhotosComponent._(
+      position: position,
+      onTapItem: onTapItem,
+      didEndScrollPosition: didEndScrollPosition,
+      scrollOffset: scrollOffset,
+      physics: physics,
+    );
+  }
+
+  factory HomePhotosComponent.related({
+    required String relatedPhotoId,
+    double Function()? position,
+    OnTapPhotoItem? onTapItem,
+    VoidCallback? didEndScrollPosition,
+    void Function(double scrollOffset)? scrollOffset,
+    ScrollPhysics? physics,
+  }) {
+    return HomePhotosComponent._(
+      photoId: relatedPhotoId,
+      position: position,
+      onTapItem: onTapItem,
+      didEndScrollPosition: didEndScrollPosition,
+      scrollOffset: scrollOffset,
+      physics: physics,
+    );
+  }
+
+  @override
+  String? getPhotoId() => photoId;
+
+  late ScrollController controller;
 
   double _pos = 0;
 
@@ -29,16 +70,20 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   void onCreate() {
     super.onCreate();
     setWithSafeArea(false);
+    setCircularBottomIndicator(true);
+    setRefreshable(true);
+    controller = ScrollController();
+
     controller.addListener(paginationListener);
 
-    _pos = position ?? 0;
+    _pos = position?.call() ?? 0;
 
     Future.delayed(const Duration(milliseconds: 300), () {
       if (_pos != 0) {
         controller.animateTo(
           _pos,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.fastLinearToSlowEaseIn,
         );
       }
     });
@@ -60,6 +105,9 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   }
 
   @override
+  Future<void> onRefresh() async => viewModel?.refreshData();
+
+  @override
   Widget onBuildBodyWidget(BuildContext context) {
     return MasonryGridView.count(
       crossAxisCount: 2,
@@ -68,7 +116,9 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,
       itemCount: viewModel!.items.length,
+      physics: physics,
       shrinkWrap: true,
+      clipBehavior: Clip.antiAlias,
       itemBuilder: (ctx, index) {
         PhotoHome photoHome = viewModel!.items[index];
 

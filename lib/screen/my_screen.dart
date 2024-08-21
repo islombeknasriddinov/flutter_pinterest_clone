@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -21,6 +20,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
   bool _scrollable = false;
   bool _hasCircularBottomIndicatorEnable = false;
   bool _withSafeArea = true;
+  bool _extendBodyBehindAppBar = false;
   Color? _backgroundColor;
   TickerProvider? _tickerProvider;
 
@@ -66,6 +66,10 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
     _withSafeArea = value;
   }
 
+  void setExtendBodyBehindAppBar(bool value) {
+    _extendBodyBehindAppBar = value;
+  }
+
   Future<void> onRefresh() async {}
 
   void onCreate() {
@@ -97,7 +101,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
     return null;
   }
 
-  Widget onBuild(BuildContext context) {
+  Widget onBuildWidget(BuildContext context) {
     Widget body = ChangeNotifierProvider<Vm>.value(
       value: viewModel!,
       child: Consumer<Vm>(
@@ -109,7 +113,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
           bodyWidget = Stack(
             children: [
               Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   ErrorMessageWidget(
                     message: model.message,
@@ -141,6 +144,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
     }
 
     return Scaffold(
+      extendBodyBehindAppBar: _extendBodyBehindAppBar,
       backgroundColor: _backgroundColor,
       appBar: buildAppBarWidget(context),
       persistentFooterButtons: buildPersistentFooterWidgets(context),

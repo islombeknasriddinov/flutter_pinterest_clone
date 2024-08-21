@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
+import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 
 class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implements MainScreenView {
   static const String ROUTE_NAME = "main_screen";
@@ -26,6 +26,10 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     CupertinoIcons.profile_circled,
   ];
 
+  final List<Widget> myComponents = [];
+
+  ScrollController get controller => ScrollController();
+
   @override
   void onCreate() {
     super.onCreate();
@@ -33,13 +37,27 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     setBackgroundColor(Colors.white);
     setCircularBottomIndicator(true);
     setWithSafeArea(false);
+
+    myComponents.addAll(
+      [
+        HomePhotosComponent.main(
+          position: () => viewModel?.position ?? 0,
+          scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
+          onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
+        ),
+        Container(),
+        Container(),
+        Container(),
+      ],
+    );
   }
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
       children: [
-        currentPage(),
+        //currentPage(),
+        myComponents[viewModel?.currentIndex ?? 0],
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -72,22 +90,17 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     return items;
   }
 
-  Widget currentPage() {
-    switch (viewModel?.currentIndex) {
-      case SEARCH_SCREEN:
-        return Container();
-      case MESSAGE_SCREEN:
-        return Container();
-      case PROFILE_SCREEN:
-        return Container();
-      case HOME_SCREEN:
-      default:
-        return HomePhotosComponent(
-          controller: ScrollController(),
-          position: viewModel?.position ?? 0,
-          scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
-          onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
-        );
-    }
-  }
+// Widget currentPage() {
+//   switch (viewModel?.currentIndex) {
+//     case SEARCH_SCREEN:
+//       return Container();
+//     case MESSAGE_SCREEN:
+//       return Container();
+//     case PROFILE_SCREEN:
+//       return Container();
+//     case HOME_SCREEN:
+//     default:
+//       return;
+//   }
+// }
 }

@@ -4,9 +4,6 @@ import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
-import 'package:flutter_pinterestclone/widget/circular_bottom_indicator.dart';
-import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
-import 'package:flutter_pinterestclone/widget/error_message_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class MyComponent<Vm extends MyViewModel, V extends View> extends StatelessWidget
@@ -75,6 +72,9 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   }
 
   @override
+  void setExtendBodyBehindAppBar(bool value) {}
+
+  @override
   Future<void> onRefresh() async {}
 
   @override
@@ -117,20 +117,18 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   }
 
   @override
-  Widget onBuild(BuildContext context) {
-    Widget body = ChangeNotifierProvider<Vm>.value(
+  Widget onBuildWidget(BuildContext context) {
+    return ChangeNotifierProvider<Vm>.value(
       value: viewModel!,
       child: Consumer<Vm>(
         builder: (_, model, child) {
           Widget bodyWidget = onBuildBodyWidget(context);
           bodyWidget = Expanded(flex: 1, child: bodyWidget);
-          if (_scrollable == true) {
-            bodyWidget = SingleChildScrollView(child: bodyWidget);
-          }
 
-          bodyWidget = Stack(
+/*          bodyWidget = Stack(
             children: [
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ErrorMessageWidget(
                     message: model.message,
@@ -143,7 +141,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
                   ? CircularIndicatorWidget(model.isLoading)
                   : CircularBottomIndicator(model.isLoading),
             ],
-          );
+          );*/
 
           if (_refreshable == true) {
             bodyWidget = RefreshIndicator(
@@ -152,21 +150,23 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
             );
           }
 
+          if (_withSafeArea) {
+            bodyWidget = SafeArea(child: bodyWidget);
+          }
+
           return bodyWidget;
         },
       ),
     );
 
-    if (_withSafeArea) {
-      body = SafeArea(child: body);
-    }
+/*
 
     return Scaffold(
       backgroundColor: _backgroundColor,
       appBar: buildAppBarWidget(context),
       persistentFooterButtons: buildPersistentFooterWidgets(context),
       body: body,
-    );
+    );*/
   }
 
   @override

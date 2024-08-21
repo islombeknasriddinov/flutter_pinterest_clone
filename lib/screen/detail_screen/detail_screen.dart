@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
+import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 
 class ArgDetailScreen extends MyArgument {
   static const String ARG_DETAIL = "arg_detail";
@@ -37,10 +37,11 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   @override
   void onCreate() {
     super.onCreate();
+    setBackgroundColor(Colors.white);
     setWithSafeArea(false);
     setScrollable(true);
     setCircularBottomIndicator(true);
-    setBackgroundColor(Colors.white);
+    setExtendBodyBehindAppBar(true);
 
     _animationController = AnimationController(
       vsync: getVsync(),
@@ -61,22 +62,11 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   Matrix4 _revertZoom() => Matrix4.identity();
 
   @override
-  Widget onBuild(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          super.onBuild(context),
-          Container(
-            height: kToolbarHeight * 2,
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [BackButton(color: Colors.white)],
-            ),
-          ),
-        ],
-      ),
+  PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      automaticallyImplyLeading: true,
+      elevation: 0,
     );
   }
 
@@ -148,7 +138,9 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
             ),
           ],
         ),
-          HomePhotosComponent(
+        HomePhotosComponent.related(
+          relatedPhotoId: arg.photoHome.id,
+          physics: const NeverScrollableScrollPhysics(),
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
         ),
       ],

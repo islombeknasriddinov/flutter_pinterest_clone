@@ -34,7 +34,17 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
       }
     });*/
 
-    _apiPhotoList(_page);
+    initData();
+  }
+
+  void initData() {
+    final photoId = view.getPhotoId();
+
+    if (photoId?.isNotEmpty == true) {
+      loadRelatedPhotos(photoId!);
+    } else {
+      _apiPhotoList(_page);
+    }
   }
 
   @override
@@ -65,6 +75,32 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
       if (withProgress == true) setProgress(true);
 
       List<PhotoHome> photoList = await networkManager.getPhotos(page: page);
+      if (photoList.isNotEmpty) {
+        _list.addAll(photoList);
+      }
+    } catch (e, st) {
+      Logger.e(e, st);
+      setErrorMessage(e, st);
+    } finally {
+      if (withProgress == true) setProgress(false);
+    }
+  }
+
+  Future<void> loadRelatedPhotos(String photoId, {bool withProgress = true}) async {
+    try {
+      resetMessage();
+
+      final result = await Connectivity().checkConnectivity();
+
+      if (result == ConnectivityResult.none) {
+        setErrorMessage("Подключение к интернету прервано");
+        return;
+      }
+
+      if (withProgress == true) setProgress(true);
+
+      List<PhotoHome> photoList =
+          await networkManager.getRelatedPhotos(photoId).then((value) => value.results);
       if (photoList.isNotEmpty) {
         _list.addAll(photoList);
       }

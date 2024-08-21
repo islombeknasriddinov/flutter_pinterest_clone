@@ -15,6 +15,8 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
   @override
   void onCreate() {
     super.onCreate();
+    setWithSafeArea(false);
+    setExtendBodyBehindAppBar(true);
     controller = AnimationController(
       vsync: getVsync(),
       duration: const Duration(seconds: 3),
@@ -31,7 +33,7 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
   PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 223, 26, 37),
-      primary: true,
+      primary: false,
       elevation: 0,
     );
   }

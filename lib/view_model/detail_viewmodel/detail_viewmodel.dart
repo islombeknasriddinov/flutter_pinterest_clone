@@ -20,34 +20,5 @@ class DetailScreenViewModelImpl extends MyViewModelImpl<DetailScreenView>
   @override
   void onCreate() {
     super.onCreate();
-
-    loadRelatedPhotos();
-  }
-
-  Future<void> loadRelatedPhotos({bool withProgress = true}) async {
-    try {
-      resetMessage();
-
-      final result = await Connectivity().checkConnectivity();
-
-      if (result == ConnectivityResult.none) {
-        setErrorMessage("Подключение к интернету прервано");
-        return;
-      }
-
-      if (withProgress == true) setProgress(true);
-
-      List<PhotoHome> photoList = await networkManager
-          .getRelatedPhotos(view.arg.photoHome.id)
-          .then((value) => value.results);
-      if (photoList.isNotEmpty) {
-        _relatedPhotos.addAll(photoList);
-      }
-    } catch (e, st) {
-      Logger.e(e, st);
-      setErrorMessage(e, st);
-    } finally {
-      if (withProgress == true) setProgress(false);
-    }
   }
 }

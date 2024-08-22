@@ -67,12 +67,19 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: true,
       elevation: 0,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.more_horiz, size: 24, color: Colors.white),
+          onPressed: () {
+            print("@@@ horiz");
+          },
+        ),
+      ],
     );
   }
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
 
     return Column(
       children: [
@@ -80,63 +87,45 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
           height: MediaQuery.of(context).padding.top,
           color: Colors.black,
         ),
-        Stack(
-          children: [
-            Container(
-              color: Colors.black,
-              child: Hero(
-                tag: arg.photoHome.id,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  ),
-                  child: GestureDetector(
-                    onDoubleTapDown: (p) => _doubleTapDetails = p,
-                    onDoubleTap: () {
-                      final newValue = transformationController.value.isIdentity()
-                          ? _applyZoom()
-                          : _revertZoom();
+        Container(
+          color: Colors.black,
+          child: Hero(
+            tag: arg.photoHome.id,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
+              child: GestureDetector(
+                onDoubleTapDown: (p) => _doubleTapDetails = p,
+                onDoubleTap: () {
+                  final newValue = transformationController.value.isIdentity()
+                      ? _applyZoom()
+                      : _revertZoom();
 
-                      _zoomAnimation = Matrix4Tween(
-                        begin: transformationController.value,
-                        end: newValue,
-                      ).animate(CurveTween(curve: Curves.ease).animate(_animationController));
-                      _animationController.forward(from: 0);
-                    },
-                    child: InteractiveViewer(
-                      transformationController: transformationController,
-                      child: CachedNetworkImage(
-                        imageUrl: arg.photoHome.urls?.full ?? "",
-                        placeholder: (ctx, widget) => CachedNetworkImage(
-                          imageUrl: arg.photoHome.urls?.smallS3 ?? "",
-                          errorWidget: (ctx, error, st) {
-                            viewModel?.setErrorMessage(error, st);
+                  _zoomAnimation = Matrix4Tween(
+                    begin: transformationController.value,
+                    end: newValue,
+                  ).animate(CurveTween(curve: Curves.ease).animate(_animationController));
+                  _animationController.forward(from: 0);
+                },
+                child: InteractiveViewer(
+                  transformationController: transformationController,
+                  child: CachedNetworkImage(
+                    imageUrl: arg.photoHome.urls?.full ?? "",
+                    placeholder: (ctx, widget) => CachedNetworkImage(
+                      imageUrl: arg.photoHome.urls?.smallS3 ?? "",
+                      errorWidget: (ctx, error, st) {
+                        viewModel?.setErrorMessage(error, st);
 
-                            return Container();
-                          },
-                        ),
-                      ),
+                        return Container();
+                      },
                     ),
                   ),
                 ),
               ),
             ),
-            Container(
-              height: kToolbarHeight + 12,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.more_horiz, size: 24, color: Colors.white),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
         HomePhotosComponent.related(
           relatedPhotoId: arg.photoHome.id,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
-import 'package:flutter_pinterestclone/screen/my_screen.dart';
+import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 
 class MyStateBuilder extends StatefulWidget {
   final String routeName;
-  final OnBuildScreen screen;
+  final OnBuildMyState screen;
 
   MyStateBuilder(this.routeName, this.screen);
 
@@ -15,9 +15,7 @@ class MyStateBuilder extends StatefulWidget {
 
 class _MyStateBuilderState extends State<MyStateBuilder>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  late MyScreen screen;
-
-  _MyStateBuilderState();
+  late MyState screen;
 
   @override
   void initState() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
 import 'package:provider/provider.dart';
 
 abstract class MyComponent<Vm extends MyViewModel, V extends View> extends StatelessWidget
-    implements MyScreen {
+    implements MyState, View {
   BuildContext? _context;
   Vm? _viewModel;
   bool _refreshable = false;
@@ -17,16 +18,13 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   Color? _backgroundColor;
   TickerProvider? _tickerProvider;
 
-  @override
   Vm? get viewModel => _viewModel;
 
-  @override
   MyViewModel? get myViewModel => _viewModel;
 
   @override
   BuildContext getContext() => _context!;
 
-  @override
   T? getArgument<T extends MyArgument>() {
     final myArgument = (ModalRoute.of(getContext())?.settings.arguments as MyArgument);
 
@@ -41,22 +39,18 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     _context = context;
   }
 
-  @override
   void setRefreshable(bool refresh) {
     _refreshable = refresh;
   }
 
-  @override
   void setScrollable(bool scrollable) {
     _scrollable = scrollable;
   }
 
-  @override
   void setCircularBottomIndicator(bool value) {
     _hasCircularBottomIndicatorEnable = value;
   }
 
-  @override
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
   }
@@ -66,15 +60,10 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     _tickerProvider = tickerProvider;
   }
 
-  @override
   void setWithSafeArea(bool value) {
     _withSafeArea = value;
   }
 
-  @override
-  void setExtendBodyBehindAppBar(bool value) {}
-
-  @override
   Future<void> onRefresh() async {}
 
   @override
@@ -111,7 +100,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     return MyStateBuilder("", () => this);
   }
 
-  @override
   PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
     return null;
   }
@@ -123,7 +111,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
       child: Consumer<Vm>(
         builder: (_, model, child) {
           Widget bodyWidget = onBuildBodyWidget(context);
-          bodyWidget = Expanded(flex: 1, child: bodyWidget);
+          //bodyWidget = Expanded(flex: 1, child: bodyWidget);
 
 /*          bodyWidget = Stack(
             children: [
@@ -169,10 +157,8 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     );*/
   }
 
-  @override
   Widget onBuildBodyWidget(BuildContext context);
 
-  @override
   List<Widget>? buildPersistentFooterWidgets(BuildContext context) {
     return null;
   }

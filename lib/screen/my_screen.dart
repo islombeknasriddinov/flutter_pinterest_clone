@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -13,8 +14,7 @@ abstract class MyArgument {
   Map<String, dynamic> arg() => {argKey: this};
 }
 
-abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View {
-  BuildContext? _context;
+abstract class MyScreen<Vm extends MyViewModel, V extends View> extends MyState implements View {
   Vm? _viewModel;
   bool _refreshable = false;
   bool _scrollable = false;
@@ -22,24 +22,15 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
   bool _withSafeArea = true;
   bool _extendBodyBehindAppBar = false;
   Color? _backgroundColor;
-  TickerProvider? _tickerProvider;
 
   Vm? get viewModel => _viewModel;
 
   MyViewModel? get myViewModel => _viewModel;
 
-  BuildContext getContext() => _context!;
-
   T? getArgument<T extends MyArgument>() {
     final myArgument = (ModalRoute.of(getContext())?.settings.arguments as MyArgument);
 
     return myArgument.arg()[myArgument.argKey] as T;
-  }
-
-  TickerProvider getVsync() => _tickerProvider!;
-
-  void setContext(BuildContext context) {
-    _context = context;
   }
 
   void setRefreshable(bool refresh) {
@@ -58,10 +49,6 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
     _backgroundColor = color;
   }
 
-  void setVsync(TickerProvider tickerProvider) {
-    _tickerProvider = tickerProvider;
-  }
-
   void setWithSafeArea(bool value) {
     _withSafeArea = value;
   }
@@ -72,28 +59,34 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
 
   Future<void> onRefresh() async {}
 
+  @override
   void onCreate() {
+    super.onCreate();
     if (_viewModel == null) {
       _viewModel = ViewModelProvider.of(this).get(V) as Vm?;
       _viewModel?.onCreate();
     }
   }
 
+  @override
   void didUpdateWidgets(covariant MyScreen oldWidget) {
-    this._context = oldWidget._context;
+    super.didUpdateWidgets(oldWidget);
     this._viewModel = oldWidget._viewModel as Vm?;
     this._refreshable = oldWidget._refreshable;
     this._scrollable = oldWidget._scrollable;
     this._hasCircularBottomIndicatorEnable = oldWidget._hasCircularBottomIndicatorEnable;
     this._backgroundColor = oldWidget._backgroundColor;
-    this._tickerProvider = oldWidget._tickerProvider;
   }
 
+  @override
   void initListeners() {
+    super.initListeners();
     viewModel?.initListeners();
   }
 
+  @override
   void onDestroy() {
+    super.onDestroy();
     viewModel?.onDestroy();
   }
 
@@ -101,6 +94,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> implements View 
     return null;
   }
 
+  @override
   Widget onBuildWidget(BuildContext context) {
     Widget body = ChangeNotifierProvider<Vm>.value(
       value: viewModel!,

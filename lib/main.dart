@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
     };
   }
 
-  WidgetBuilder screenBuilder(String routeName, OnBuildScreen onBuildScreen) {
+  WidgetBuilder screenBuilder(String routeName, OnBuildMyState onBuildScreen) {
     return (_) => MyStateBuilder(routeName, onBuildScreen);
   }
 }

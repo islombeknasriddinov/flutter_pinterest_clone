@@ -1,3 +1,4 @@
+import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -39,6 +40,7 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
 
   @override
   void setErrorMessage(dynamic error, [dynamic st]) {
+    Logger.e(error, st);
     _message = Message.error(messageText: error.toString());
   }
 }

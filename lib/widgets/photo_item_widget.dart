@@ -5,50 +5,67 @@ import 'package:flutter_pinterestclone/common/typedef.dart';
 
 class PhotoItemWidget extends StatelessWidget {
   PhotoHome photoHome;
+  double screenWidth;
   OnTapPhotoItem? onTapItem;
   OnTapPhotoItem? onTapMore;
 
   PhotoItemWidget({
     Key? key,
     required this.photoHome,
+    required this.screenWidth,
     this.onTapItem,
     this.onTapMore,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _buildPhotoWidget(),
-          const SizedBox(height: 10),
-          _buildInfosWidget(),
-        ],
-      ),
+    double imageWidth = photoHome.width!.toDouble();
+    double imageHeight = photoHome.height!.toDouble() / 2;
+
+    double screenWidth = this.screenWidth;
+
+    double aspectRatio = imageWidth / imageHeight;
+
+    double scalingFactor = screenWidth / imageWidth;
+
+    double widgetWidth = imageWidth * scalingFactor;
+    double widgetHeight = widgetWidth / aspectRatio;
+
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildPhotoWidget(Size(widgetWidth, widgetHeight)),
+              const SizedBox(height: 10),
+              _buildInfosWidget(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildPhotoWidget() {
+  Widget _buildPhotoWidget(Size size) {
     return GestureDetector(
       child: Hero(
         tag: photoHome.id,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18.0),
           child: CachedNetworkImage(
+            width: size.width.round().toDouble(),
+            height: size.height.round().toDouble(),
             imageUrl: photoHome.urls?.smallS3 ?? "",
+            fit: BoxFit.cover,
             placeholder: (context, url) {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(18.0),
-                child: AnimatedContainer(
-                  height: 200,
-                  width: double.infinity,
-                  color: Colors.white,
-                  duration: const Duration(milliseconds: 300),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                child: Container(
+                  width: size.width,
+                  height: size.height,
+                  color: hexToColor(photoHome.color ?? Colors.grey.value.toString()),
                 ),
               );
             },
@@ -57,6 +74,10 @@ class PhotoItemWidget extends StatelessWidget {
       ),
       onTap: () => onTapItem?.call(photoHome),
     );
+  }
+
+  Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 
   Widget _buildInfosWidget() {

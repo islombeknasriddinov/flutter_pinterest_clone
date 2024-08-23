@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
-import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -12,10 +11,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   BuildContext? _context;
   Vm? _viewModel;
   bool _refreshable = false;
-  bool _scrollable = false;
-  bool _hasCircularBottomIndicatorEnable = false;
-  bool _withSafeArea = true;
-  Color? _backgroundColor;
   TickerProvider? _tickerProvider;
 
   Vm? get viewModel => _viewModel;
@@ -24,12 +19,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
 
   @override
   BuildContext getContext() => _context!;
-
-  T? getArgument<T extends MyArgument>() {
-    final myArgument = (ModalRoute.of(getContext())?.settings.arguments as MyArgument);
-
-    return myArgument.arg()[myArgument.argKey] as T;
-  }
 
   @override
   TickerProvider getVsync() => _tickerProvider!;
@@ -43,25 +32,9 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     _refreshable = refresh;
   }
 
-  void setScrollable(bool scrollable) {
-    _scrollable = scrollable;
-  }
-
-  void setCircularBottomIndicator(bool value) {
-    _hasCircularBottomIndicatorEnable = value;
-  }
-
-  void setBackgroundColor(Color color) {
-    _backgroundColor = color;
-  }
-
   @override
   void setVsync(TickerProvider tickerProvider) {
     _tickerProvider = tickerProvider;
-  }
-
-  void setWithSafeArea(bool value) {
-    _withSafeArea = value;
   }
 
   Future<void> onRefresh() async {}
@@ -79,9 +52,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
     this._context = oldWidget._context;
     this._viewModel = oldWidget._viewModel as Vm?;
     this._refreshable = oldWidget._refreshable;
-    this._scrollable = oldWidget._scrollable;
-    this._hasCircularBottomIndicatorEnable = oldWidget._hasCircularBottomIndicatorEnable;
-    this._backgroundColor = oldWidget._backgroundColor;
     this._tickerProvider = oldWidget._tickerProvider;
   }
 
@@ -98,10 +68,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   @override
   Widget build(BuildContext context) {
     return MyStateBuilder("", () => this);
-  }
-
-  PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
-    return null;
   }
 
   @override
@@ -138,10 +104,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
             );
           }
 
-          if (_withSafeArea) {
-            bodyWidget = SafeArea(child: bodyWidget);
-          }
-
           return bodyWidget;
         },
       ),
@@ -158,8 +120,4 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
   }
 
   Widget onBuildBodyWidget(BuildContext context);
-
-  List<Widget>? buildPersistentFooterWidgets(BuildContext context) {
-    return null;
-  }
 }

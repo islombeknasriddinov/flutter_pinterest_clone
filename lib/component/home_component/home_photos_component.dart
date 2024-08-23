@@ -69,8 +69,6 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   @override
   void onCreate() {
     super.onCreate();
-    setWithSafeArea(false);
-    setCircularBottomIndicator(true);
     setRefreshable(true);
     controller = ScrollController();
 
@@ -109,6 +107,8 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
+    final screenSize = MediaQuery.of(getContext()).size;
+
     return MasonryGridView.count(
       crossAxisCount: 2,
       controller: controller,
@@ -122,7 +122,11 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       itemBuilder: (ctx, index) {
         PhotoHome photoHome = viewModel!.items[index];
 
-        return PhotoItemWidget(photoHome: photoHome, onTapItem: onTapItem);
+        return PhotoItemWidget(
+          photoHome: photoHome,
+          screenWidth: screenSize.width,
+          onTapItem: onTapItem,
+        );
       },
     );
   }

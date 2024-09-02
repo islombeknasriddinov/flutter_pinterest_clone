@@ -51,8 +51,7 @@ class NetworkResponse {
       "status code: $statusCode",
       "request type: $requestType",
       "isSuccessful: $isSuccessful",
-      if (isSuccessful != true) "error text: $errorText",
-      if (isSuccessful == true) "response: $response",
+      if (isSuccessful != true) "error text: $errorText" else "response: $response",
       " ",
     ].join("\n");
   }

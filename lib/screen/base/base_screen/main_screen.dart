@@ -56,7 +56,6 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
   Widget onBuildBodyWidget(BuildContext context) {
     return Stack(
       children: [
-        //currentPage(),
         myComponents[viewModel?.currentIndex ?? 0],
         Align(
           alignment: Alignment.bottomCenter,
@@ -89,18 +88,4 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
 
     return items;
   }
-
-// Widget currentPage() {
-//   switch (viewModel?.currentIndex) {
-//     case SEARCH_SCREEN:
-//       return Container();
-//     case MESSAGE_SCREEN:
-//       return Container();
-//     case PROFILE_SCREEN:
-//       return Container();
-//     case HOME_SCREEN:
-//     default:
-//       return;
-//   }
-// }
 }

@@ -34,8 +34,10 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   void onDestroy() {}
 
   void setProgress(bool value) {
-    _isLoading = value;
-    notifyListeners();
+    if (_isLoading != value) {
+      _isLoading = value;
+      notifyListeners();
+    }
   }
 
   @override

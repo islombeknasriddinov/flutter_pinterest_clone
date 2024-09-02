@@ -24,6 +24,7 @@ class NetworkRequest {
     return [
       "*** Request ***",
       "api: $api",
+      "headrs: $header",
       "params: $params",
       " ",
     ].join("\n");

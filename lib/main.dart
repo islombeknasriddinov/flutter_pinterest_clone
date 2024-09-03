@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
+import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/base/base_screen/main_screen.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
@@ -10,19 +11,21 @@ import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MyApp());
+  runApp(MyPinterestApp());
 }
 
 class PinterestAppTheme {}
 
 class PinterestAppColor {}
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyPinterestApp extends MyComponent {
+  @override
+  void onCreate() {
+    ViewModelProvider.init();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    ViewModelProvider.init();
+  Widget onBuildWidget(BuildContext context) {
     final routes = getRoutes();
 
     return MaterialApp(
@@ -44,6 +47,11 @@ class MyApp extends StatelessWidget {
   }
 
   WidgetBuilder screenBuilder(String routeName, OnBuildMyState onBuildScreen) {
-    return (_) => MyStateBuilder(routeName, onBuildScreen);
+    return (_) => MyStateBuilder.screen(routeName, onBuildScreen);
+  }
+
+  @override
+  Widget onBuildBodyWidget(BuildContext context) {
+    return Container();
   }
 }

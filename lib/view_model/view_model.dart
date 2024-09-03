@@ -32,8 +32,6 @@ abstract class MainScreenViewModel extends MyViewModel {
   void setScrollOffset(double index);
 }
 
-abstract class HomeScreenViewModel extends MainScreenViewModel {}
-
 abstract class SearchScreenViewModel extends MyViewModel {}
 
 abstract class DetailScreenViewModel extends MyViewModel {

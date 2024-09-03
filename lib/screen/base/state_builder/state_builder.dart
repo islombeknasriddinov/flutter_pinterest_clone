@@ -4,10 +4,15 @@ import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 
 class MyStateBuilder extends StatefulWidget {
-  final String routeName;
-  final OnBuildMyState screen;
+  final String? routeName;
+  final OnBuildMyState state;
 
-  MyStateBuilder(this.routeName, this.screen);
+  MyStateBuilder._(this.routeName, this.state);
+
+  factory MyStateBuilder.screen(String routeName, OnBuildMyState screen) =>
+      MyStateBuilder._(routeName, screen);
+
+  factory MyStateBuilder.component(OnBuildMyState component) => MyStateBuilder._(null, component);
 
   @override
   State<MyStateBuilder> createState() => _MyStateBuilderState();
@@ -15,27 +20,29 @@ class MyStateBuilder extends StatefulWidget {
 
 class _MyStateBuilderState extends State<MyStateBuilder>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  late MyState screen;
+  late MyState state;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    screen = widget.screen.call();
-    Logger.p("OpenedScreen: ${widget.routeName}\n");
+    state = widget.state.call();
+    if (widget.routeName != null) {
+      Logger.p("OpenedScreen: ${widget.routeName}\n");
+    }
 
-    screen.setVsync(this);
+    state.setVsync(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    screen.setContext(context);
+    state.setContext(context);
 
-    screen.onCreate();
-    screen.initListeners();
+    state.onCreate();
+    state.initListeners();
 
     try {
-      return screen.onBuildWidget(context);
+      return state.onBuildWidget(context);
     } finally {}
   }
 
@@ -43,15 +50,15 @@ class _MyStateBuilderState extends State<MyStateBuilder>
   void didUpdateWidget(covariant MyStateBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    screen.didUpdateWidgets(screen);
-    screen.initListeners();
+    state.didUpdateWidgets(state);
+    state.initListeners();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
 
-    screen.onDestroy();
+    state.onDestroy();
     super.dispose();
   }
 }

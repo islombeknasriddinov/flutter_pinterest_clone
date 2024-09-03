@@ -67,7 +67,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
 
   @override
   Widget build(BuildContext context) {
-    return MyStateBuilder("", () => this);
+    return MyStateBuilder.component(() => this);
   }
 
   @override

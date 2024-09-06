@@ -17,7 +17,7 @@ abstract class MyViewModel extends ViewModel {
 
   void initListeners();
 
-  void setErrorMessage(dynamic error, [String st]);
+  void setErrorMessage(dynamic error, [dynamic st]);
 }
 
 abstract class SplashScreenViewModel extends MyViewModel {}
@@ -44,4 +44,6 @@ abstract class HomePhotosComponentViewModel extends MyViewModel {
   Future<void> loadData();
 
   Future<void> refreshData();
+
+  void initData();
 }

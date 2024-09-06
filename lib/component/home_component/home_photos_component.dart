@@ -108,6 +108,36 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     final screenSize = MediaQuery.of(getContext()).size;
+    final message = viewModel!.message;
+
+    if (message != null) {
+      return Container(
+        width: screenSize.width,
+        color: message.backgroundColor,
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                message.messageText,
+                style: TextStyle(color: message.messageTextColor),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: message.messageTextColor,
+                  size: 45,
+                ),
+                style: IconButton.styleFrom(backgroundColor: Colors.white),
+                onPressed: () => viewModel?.initData(),
+              )
+            ],
+          ),
+        ),
+      );
+    }
 
     return MasonryGridView.count(
       crossAxisCount: 2,

@@ -22,7 +22,7 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
     implements DetailScreenView {
   static const String ROUTE_NAME = "detail_screen";
 
-  static open<T>(BuildContext context, ArgDetailScreen arg, {Function(T result)? onPopResult}) {
+  static open<T>(BuildContext context, ArgDetailScreen arg, {Function(T? result)? onPopResult}) {
     ScreenManager.openRoute(context, ROUTE_NAME, arg: arg, onPopResult: onPopResult);
   }
 
@@ -80,7 +80,6 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
-
     return Column(
       children: [
         Container(
@@ -99,9 +98,8 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
               child: GestureDetector(
                 onDoubleTapDown: (p) => _doubleTapDetails = p,
                 onDoubleTap: () {
-                  final newValue = transformationController.value.isIdentity()
-                      ? _applyZoom()
-                      : _revertZoom();
+                  final newValue =
+                      transformationController.value.isIdentity() ? _applyZoom() : _revertZoom();
 
                   _zoomAnimation = Matrix4Tween(
                     begin: transformationController.value,

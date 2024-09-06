@@ -44,5 +44,6 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   void setErrorMessage(dynamic error, [dynamic st]) {
     Logger.e(error, st);
     _message = Message.error(messageText: error.toString());
+    notifyListeners();
   }
 }

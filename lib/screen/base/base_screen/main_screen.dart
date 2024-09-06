@@ -14,11 +14,6 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
     ScreenManager.replaceRoute(context, ROUTE_NAME);
   }
 
-  static const int HOME_SCREEN = 0;
-  static const int SEARCH_SCREEN = 1;
-  static const int MESSAGE_SCREEN = 2;
-  static const int PROFILE_SCREEN = 3;
-
   final List<IconData> _icons = [
     CupertinoIcons.house_fill,
     CupertinoIcons.search,

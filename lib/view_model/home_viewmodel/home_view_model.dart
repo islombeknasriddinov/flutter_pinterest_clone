@@ -37,6 +37,7 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
     initData();
   }
 
+  @override
   void initData() {
     final photoId = view.getPhotoId();
 

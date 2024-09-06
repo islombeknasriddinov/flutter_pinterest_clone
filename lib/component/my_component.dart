@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -77,25 +78,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
       child: Consumer<Vm>(
         builder: (_, model, child) {
           Widget bodyWidget = onBuildBodyWidget(context);
-          //bodyWidget = Expanded(flex: 1, child: bodyWidget);
-
-/*          bodyWidget = Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ErrorMessageWidget(
-                    message: model.message,
-                    onTap: () => model.resetMessage(),
-                  ),
-                  bodyWidget,
-                ],
-              ),
-              !_hasCircularBottomIndicatorEnable
-                  ? CircularIndicatorWidget(model.isLoading)
-                  : CircularBottomIndicator(model.isLoading),
-            ],
-          );*/
 
           if (_refreshable == true) {
             bodyWidget = RefreshIndicator(
@@ -108,15 +90,6 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
         },
       ),
     );
-
-/*
-
-    return Scaffold(
-      backgroundColor: _backgroundColor,
-      appBar: buildAppBarWidget(context),
-      persistentFooterButtons: buildPersistentFooterWidgets(context),
-      body: body,
-    );*/
   }
 
   Widget onBuildBodyWidget(BuildContext context);

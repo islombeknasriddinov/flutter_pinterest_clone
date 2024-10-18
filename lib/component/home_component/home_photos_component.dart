@@ -4,8 +4,8 @@ import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
+import 'package:flutter_pinterestclone/widget/my_grid_list.dart';
 import 'package:flutter_pinterestclone/widget/photo_item_widget.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, HomePhotosComponentView>
     implements HomePhotosComponentView {
@@ -139,8 +139,7 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       );
     }
 
-    return MasonryGridView.count(
-      crossAxisCount: 2,
+    return MyGridListView(
       controller: controller,
       padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
       crossAxisSpacing: 8,

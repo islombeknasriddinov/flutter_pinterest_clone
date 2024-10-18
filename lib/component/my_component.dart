@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
+import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
-import 'package:provider/provider.dart';
 
-abstract class MyComponent<Vm extends MyViewModel, V extends View> extends StatelessWidget
-    implements MyState, View {
+abstract class MyComponentWidget extends StatelessWidget implements MyState {}
+
+abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MyComponentWidget implements View {
   BuildContext? _context;
   Vm? _viewModel;
   bool _refreshable = false;
@@ -73,13 +73,12 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
 
   @override
   Widget onBuildWidget(BuildContext context) {
-    return ChangeNotifierProvider<Vm>.value(
-      value: viewModel!,
-      child: Consumer<Vm>(
-        builder: (_, model, child) {
-          Widget bodyWidget = onBuildBodyWidget(context);
+    return ViewModelBuilder<Vm>(
+      viewModel: viewModel!,
+      builder: (_, model, child) {
+        Widget bodyWidget = onBuildBodyWidget(context);
 
-          if (_refreshable == true) {
+        if (_refreshable == true) {
             bodyWidget = RefreshIndicator(
               onRefresh: onRefresh,
               child: bodyWidget,
@@ -87,8 +86,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends State
           }
 
           return bodyWidget;
-        },
-      ),
+      },
     );
   }
 

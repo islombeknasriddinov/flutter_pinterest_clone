@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/common/color_util.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
+import 'package:flutter_pinterestclone/widget/my_cached_network_image_widget.dart';
 
 class PhotoItemWidget extends StatelessWidget {
   PhotoHome photoHome;
@@ -21,8 +22,6 @@ class PhotoItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double imageWidth = photoHome.width!.toDouble();
     double imageHeight = photoHome.height!.toDouble() / 2;
-
-    double screenWidth = this.screenWidth;
 
     double aspectRatio = imageWidth / imageHeight;
 
@@ -49,35 +48,24 @@ class PhotoItemWidget extends StatelessWidget {
   }
 
   Widget _buildPhotoWidget(Size size) {
-    return GestureDetector(
-      child: Hero(
-        tag: photoHome.id,
-        child: ClipRRect(
+    return MyCachedNetworkImageWidget(
+      photoHome,
+      heroTag: photoHome.id,
+      size: size,
+      imageFit: BoxFit.cover,
+      borderRadius: BorderRadius.circular(18.0),
+      imagePlaceHolder: (context, url) {
+        return ClipRRect(
           borderRadius: BorderRadius.circular(18.0),
-          child: CachedNetworkImage(
-            width: size.width.round().toDouble(),
-            height: size.height.round().toDouble(),
-            imageUrl: photoHome.urls?.smallS3 ?? "",
-            fit: BoxFit.cover,
-            placeholder: (context, url) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(18.0),
-                child: Container(
-                  width: size.width,
-                  height: size.height,
-                  color: hexToColor(photoHome.color ?? Colors.grey.value.toString()),
-                ),
-              );
-            },
+          child: Container(
+            width: size.width,
+            height: size.height,
+            color: ColorUtil.hexToColor(photoHome.color ?? Colors.grey.value.toString()),
           ),
-        ),
-      ),
-      onTap: () => onTapItem?.call(photoHome),
-    );
-  }
-
-  Color hexToColor(String code) {
-    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+        );
+      },
+      onTapImage: onTapItem,
+    ).build();
   }
 
   Widget _buildInfosWidget() {

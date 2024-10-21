@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 class MySnackBar {
   static void showSnackBar(BuildContext context){
-    Flushbar(
+/*    Flushbar(
       
-    ).show(context);
+    ).show(context);*/
   }
 }

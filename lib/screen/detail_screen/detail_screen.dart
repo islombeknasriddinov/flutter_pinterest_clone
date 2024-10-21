@@ -6,6 +6,7 @@ import 'package:flutter_pinterestclone/component/home_component/home_photos_comp
 import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
+import 'package:flutter_pinterestclone/widget/my_cached_network_image_widget.dart';
 
 class ArgDetailScreen extends MyArgument {
   static const String ARG_DETAIL = "arg_detail";
@@ -29,11 +30,6 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
   @override
   ArgDetailScreen get arg => getArgument<ArgDetailScreen>()!;
 
-  TransformationController transformationController = TransformationController();
-  TapDownDetails _doubleTapDetails = TapDownDetails();
-  late AnimationController _animationController;
-  Animation<Matrix4>? _zoomAnimation;
-
   @override
   void onCreate() {
     super.onCreate();
@@ -42,24 +38,7 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
     setScrollable(true);
     setCircularBottomIndicator(true);
     setExtendBodyBehindAppBar(true);
-
-    _animationController = AnimationController(
-      vsync: getVsync(),
-      duration: const Duration(milliseconds: 300),
-    )..addListener(() {
-        transformationController.value = _zoomAnimation!.value;
-      });
   }
-
-  Matrix4 _applyZoom() {
-    final tapPosition = _doubleTapDetails.localPosition;
-    final zoomed = Matrix4.identity()
-      ..translate(-tapPosition.dx * 2, -tapPosition.dy * 2)
-      ..scale(3.0);
-    return zoomed;
-  }
-
-  Matrix4 _revertZoom() => Matrix4.identity();
 
   @override
   PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
@@ -88,42 +67,22 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
         ),
         Container(
           color: Colors.black,
-          child: Hero(
-            tag: arg.photoHome.id,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-              child: GestureDetector(
-                onDoubleTapDown: (p) => _doubleTapDetails = p,
-                onDoubleTap: () {
-                  final newValue =
-                      transformationController.value.isIdentity() ? _applyZoom() : _revertZoom();
-
-                  _zoomAnimation = Matrix4Tween(
-                    begin: transformationController.value,
-                    end: newValue,
-                  ).animate(CurveTween(curve: Curves.ease).animate(_animationController));
-                  _animationController.forward(from: 0);
-                },
-                child: InteractiveViewer(
-                  transformationController: transformationController,
-                  child: CachedNetworkImage(
-                    imageUrl: arg.photoHome.urls?.full ?? "",
-                    placeholder: (ctx, widget) => CachedNetworkImage(
-                      imageUrl: arg.photoHome.urls?.smallS3 ?? "",
-                      errorWidget: (ctx, error, st) {
-                        viewModel?.setErrorMessage(error, st);
-
-                        return Container();
-                      },
-                    ),
-                  ),
-                ),
-              ),
+          child: MyCachedNetworkImageWidget(
+            arg.photoHome,
+            heroTag: arg.photoHome.id,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
             ),
-          ),
+            imagePlaceHolder: (ctx, widget) => CachedNetworkImage(
+              imageUrl: arg.photoHome.urls?.smallS3 ?? "",
+              errorWidget: (ctx, error, st) {
+                viewModel?.setErrorMessage(error, st);
+
+                return Container();
+              },
+            ),
+          ).build(),
         ),
         HomePhotosComponent.related(
           relatedPhotoId: arg.photoHome.id,
@@ -132,12 +91,5 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
         ),
       ],
     );
-  }
-
-  @override
-  void onDestroy() {
-    transformationController.dispose();
-    _animationController.dispose();
-    super.onDestroy();
   }
 }

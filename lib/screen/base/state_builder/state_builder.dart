@@ -41,9 +41,7 @@ class _MyStateBuilderState extends State<MyStateBuilder>
     state.onCreate();
     state.initListeners();
 
-    try {
-      return state.onBuildWidget(context);
-    } finally {}
+    return state.onBuildWidget(context);
   }
 
   @override

@@ -4,7 +4,7 @@ import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
-import 'package:flutter_pinterestclone/widget/my_grid_list.dart';
+import 'package:flutter_pinterestclone/widget/my_grid_list_view.dart';
 import 'package:flutter_pinterestclone/widget/photo_item_widget.dart';
 
 class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, HomePhotosComponentView>

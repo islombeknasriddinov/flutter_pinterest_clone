@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/log.dart';
+import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/network/network_manager.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/my_view_model.dart';

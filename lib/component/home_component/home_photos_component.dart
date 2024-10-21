@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -155,6 +156,16 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
           photoHome: photoHome,
           screenWidth: screenSize.width,
           onTapItem: onTapItem,
+          onTapMore: (_) {
+            MySnackBar.showSnackBar(
+              getContext(),
+              message: "RTesthfjsdjfsjf gs sjfgjsdf s",
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderWidth: 1,
+              backgroundColor: Colors.white,
+            );
+          },
         );
       },
     );

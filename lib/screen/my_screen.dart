@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_pinterestclone/view_model/view_model.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
 import 'package:flutter_pinterestclone/widget/circular_bottom_indicator.dart';
 import 'package:flutter_pinterestclone/widget/circular_indicator_widget.dart';
-import 'package:flutter_pinterestclone/widget/error_message_widget.dart';
 
 abstract class MyArgument {
   String get argKey;
@@ -65,6 +65,13 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends MyState 
     if (_viewModel == null) {
       _viewModel = ViewModelProvider.of(this).get(V) as Vm?;
       _viewModel?.onCreate();
+      _viewModel?.addListener(_viewModelListener);
+    }
+  }
+
+  void _viewModelListener() {
+    if (_viewModel?.message != null) {
+      MySnackBar.showMessageSnackBar(getContext(), _viewModel!.message!);
     }
   }
 
@@ -81,13 +88,14 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends MyState 
   @override
   void initListeners() {
     super.initListeners();
-    viewModel?.initListeners();
+    _viewModel?.initListeners();
   }
 
   @override
   void onDestroy() {
     super.onDestroy();
-    viewModel?.onDestroy();
+    _viewModel?.removeListener(_viewModelListener);
+    _viewModel?.onDestroy();
   }
 
   PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
@@ -105,15 +113,7 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends MyState 
         }
         bodyWidget = Stack(
           children: [
-            Column(
-              children: [
-                ErrorMessageWidget(
-                  message: model.message,
-                  onTap: () => model.resetMessage(),
-                ),
-                Expanded(child: bodyWidget)
-              ],
-            ),
+            bodyWidget,
             !_hasCircularBottomIndicatorEnable
                 ? CircularIndicatorWidget(model.isLoading)
                 : CircularBottomIndicator(model.isLoading),

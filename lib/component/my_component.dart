@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
@@ -45,6 +46,13 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MyCom
     if (_viewModel == null) {
       _viewModel = ViewModelProvider.of(this).get(V) as Vm?;
       _viewModel?.onCreate();
+      _viewModel?.addListener(_viewModelListener);
+    }
+  }
+
+  void _viewModelListener() {
+    if (_viewModel?.message != null) {
+      MySnackBar.showMessageSnackBar(getContext(), _viewModel!.message!);
     }
   }
 
@@ -63,6 +71,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MyCom
 
   @override
   void onDestroy() {
+    viewModel?.removeListener(_viewModelListener);
     viewModel?.onDestroy();
   }
 

@@ -11,13 +11,19 @@ abstract class MyViewModel extends ViewModel {
 
   Message? get message;
 
-  void resetMessage();
+  void resetMessage({bool notify = false});
 
   void onDestroy();
 
   void initListeners();
 
-  void setErrorMessage(dynamic error, [dynamic st]);
+  void setErrorMessage(dynamic error, [dynamic st, bool notify = false]);
+
+  void setSuccessMessage(String message, {bool notify = false});
+
+  void setInfoMessage(String message, {bool notify = false});
+
+  void setWarningMessage(String message, {bool notify = false});
 }
 
 abstract class SplashScreenViewModel extends MyViewModel {}

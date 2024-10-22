@@ -1,5 +1,4 @@
 import 'package:flutter_pinterestclone/common/log.dart';
-import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/screen/base/bean/message.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -24,10 +23,10 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   Message? get message => _message;
 
   @override
-  void resetMessage() {
+  void resetMessage({bool notify = false}) {
     if (message != null) {
       _message = null;
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 
@@ -42,9 +41,39 @@ abstract class MyViewModelImpl<V extends View> extends MyViewModel {
   }
 
   @override
-  void setErrorMessage(dynamic error, [dynamic st]) {
+  void setErrorMessage(dynamic error, [dynamic st, bool notify = true]) {
     Logger.e(error, st);
-    _message = Message.error(messageText: error.toString());
-    notifyListeners();
+    _message = Message.error(
+      messageText: error.toString(),
+      onTapResetMessage: () => resetMessage(),
+    );
+    if (notify) notifyListeners();
+  }
+
+  @override
+  void setSuccessMessage(String message, {bool notify = true}) {
+    _message = Message.success(
+      messageText: message,
+      onTapResetMessage: () => resetMessage(),
+    );
+    if (notify) notifyListeners();
+  }
+
+  @override
+  void setInfoMessage(String message, {bool notify = true}) {
+    _message = Message.info(
+      messageText: message,
+      onTapResetMessage: () => resetMessage(),
+    );
+    if (notify) notifyListeners();
+  }
+
+  @override
+  void setWarningMessage(String message, {bool notify = true}) {
+    _message = Message.warning(
+      messageText: message,
+      onTapResetMessage: () => resetMessage(),
+    );
+    if (notify) notifyListeners();
   }
 }

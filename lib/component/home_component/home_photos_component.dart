@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
-import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -109,36 +108,6 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   @override
   Widget onBuildBodyWidget(BuildContext context) {
     final screenSize = MediaQuery.of(getContext()).size;
-    final message = viewModel!.message;
-
-    if (message != null) {
-      return Container(
-        width: screenSize.width,
-        color: message.backgroundColor,
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                message.messageText,
-                style: TextStyle(color: message.messageTextColor),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: message.messageTextColor,
-                  size: 45,
-                ),
-                style: IconButton.styleFrom(backgroundColor: Colors.white),
-                onPressed: () => viewModel?.initData(),
-              )
-            ],
-          ),
-        ),
-      );
-    }
 
     return MyGridListView(
       controller: controller,
@@ -157,14 +126,14 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
           screenWidth: screenSize.width,
           onTapItem: onTapItem,
           onTapMore: (_) {
-            MySnackBar.showSnackBar(
+            /*MySnackBar.showMess(
               getContext(),
               message: "RTesthfjsdjfsjf gs sjfgjsdf s",
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               borderRadius: BorderRadius.all(Radius.circular(20)),
               borderWidth: 1,
               backgroundColor: Colors.white,
-            );
+            );*/
           },
         );
       },

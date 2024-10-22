@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
@@ -68,20 +67,14 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
         Container(
           color: Colors.black,
           child: MyCachedNetworkImageWidget(
-            arg.photoHome,
+            arg.photoHome.urls?.full ?? "",
             heroTag: arg.photoHome.id,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(24),
               topRight: Radius.circular(24),
             ),
-            imagePlaceHolder: (ctx, widget) => CachedNetworkImage(
-              imageUrl: arg.photoHome.urls?.smallS3 ?? "",
-              errorWidget: (ctx, error, st) {
-                viewModel?.setErrorMessage(error, st);
-
-                return Container();
-              },
-            ),
+            imagePlaceHolder: (ctx, widget) =>
+                MyCachedNetworkImageWidget(arg.photoHome.urls?.smallS3 ?? "").build(),
           ).build(),
         ),
         HomePhotosComponent.related(

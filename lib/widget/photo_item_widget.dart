@@ -49,7 +49,7 @@ class PhotoItemWidget extends StatelessWidget {
 
   Widget _buildPhotoWidget(Size size) {
     return MyCachedNetworkImageWidget(
-      photoHome,
+      photoHome.urls?.smallS3 ?? photoHome.urls?.regular ?? "",
       heroTag: photoHome.id,
       size: size,
       imageFit: BoxFit.cover,
@@ -64,7 +64,7 @@ class PhotoItemWidget extends StatelessWidget {
           ),
         );
       },
-      onTapImage: onTapItem,
+      onTapImage: () => onTapItem?.call(photoHome),
     ).build();
   }
 

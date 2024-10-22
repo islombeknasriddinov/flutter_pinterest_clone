@@ -1,21 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 
 class MyCachedNetworkImageWidget extends MyState {
-  final PhotoHome photoHome;
+  final String imageUrl;
   final Size? size;
   final String? heroTag;
   final BoxFit? imageFit;
   final BorderRadius? borderRadius;
   final Widget Function(BuildContext context, String url)? imagePlaceHolder;
-  final Function(PhotoHome photo)? onTapImage;
+  final VoidCallback? onTapImage;
 
-  MyCachedNetworkImageWidget(
-    this.photoHome, {
+  MyCachedNetworkImageWidget(this.imageUrl, {
     this.size,
     this.heroTag,
     this.imageFit,
@@ -45,9 +43,18 @@ class MyCachedNetworkImageWidget extends MyState {
       child: CachedNetworkImage(
         width: size?.width.round().toDouble(),
         height: size?.height.round().toDouble(),
-        imageUrl: photoHome.urls?.smallS3 ?? "",
+        imageUrl: imageUrl,
         fit: imageFit,
         placeholder: imagePlaceHolder,
+        errorWidget: (_, __, ___) {
+          final widget = imagePlaceHolder?.call(context, __);
+
+          if (widget != null) {
+            return widget;
+          }
+
+          return Container();
+        },
       ),
     );
 
@@ -68,7 +75,7 @@ class MyCachedNetworkImageWidget extends MyState {
         return GestureDetector(
           onDoubleTapDown: viewModel.onDoubleTapDown,
           onDoubleTap: viewModel.onDoubleTap,
-          onTap: () => onTapImage?.call(photoHome),
+          onTap: onTapImage,
           child: child,
         );
       },

@@ -2,6 +2,8 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class MySnackBar {
+  static List<Flushbar> mySnackBarHistory = [];
+
   static void showSnackBar(
     BuildContext context, {
     String? title,
@@ -15,8 +17,8 @@ class MySnackBar {
     BorderRadius? borderRadius,
     Color? borderColor,
     double borderWidth = 0,
-  }) {
-    Flushbar(
+  }) async {
+    final snackBar = Flushbar(
       titleText: title?.isNotEmpty == true ? Text(title ?? "") : null,
       messageText: message?.isNotEmpty == true ? Text(message ?? "") : null,
       padding: padding,
@@ -24,14 +26,22 @@ class MySnackBar {
       isDismissible: dismissible,
       dismissDirection: dismissDirection,
       onStatusChanged: onStatusChanges,
-      //duration: const Duration(milliseconds: 500),
+      duration: const Duration(seconds: 3),
       backgroundColor: backgroundColor,
       borderRadius: borderRadius,
       borderColor: borderColor,
       borderWidth: borderWidth,
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
-      //forwardAnimationCurve: Curves.easeOut,
-    ).show(context);
+      forwardAnimationCurve: Curves.fastOutSlowIn,
+      reverseAnimationCurve: Curves.easeOut,
+    )..show(context);
+
+    if (mySnackBarHistory.isNotEmpty) {
+      mySnackBarHistory.first.dismiss();
+      mySnackBarHistory.clear();
+    }
+
+    mySnackBarHistory.add(snackBar);
   }
 }

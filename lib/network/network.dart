@@ -9,6 +9,7 @@ class Network {
   static Future<NetworkResponse> getRequest(NetworkRequest request) async {
     var uri = Uri.https(request.baseUrl, request.api, request.params);
     var data = await get(uri, headers: request.header);
+
     NetworkResponse response = NetworkResponse(
       uri: data.request?.url.toString(),
       api: request.api,

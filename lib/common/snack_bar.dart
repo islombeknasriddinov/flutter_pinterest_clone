@@ -25,8 +25,10 @@ class MySnackBar {
       message: message.messageText,
       messageTextColor: message.messageTextColor,
       backgroundColor: message.backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-      borderRadius: const BorderRadius.all(Radius.circular(32)),
+      icon: message.icon,
+      iconColor: message.iconColor,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
       duration: duration,
       onStatusChanges: (status) {
         if (status == FlushbarStatus.DISMISSED) {
@@ -40,11 +42,13 @@ class MySnackBar {
     BuildContext context, {
     String? title,
     String? message,
+    IconData? icon,
+    Color? iconColor,
     Color? messageTextColor,
     Color? titleTextColor,
     bool dismissible = true,
     EdgeInsets padding = const EdgeInsets.all(16),
-    EdgeInsets margin = const EdgeInsets.symmetric(horizontal: 16),
+    EdgeInsets margin = const EdgeInsets.all(16),
     FlushbarDismissDirection dismissDirection = FlushbarDismissDirection.VERTICAL,
     FlushbarStatusCallback? onStatusChanges,
     Color backgroundColor = Colors.transparent,
@@ -63,10 +67,12 @@ class MySnackBar {
       messageText: message?.isNotEmpty == true
           ? Text(
               message ?? "",
-              style: TextStyle(color: messageTextColor, fontSize: 16),
-              textAlign: TextAlign.center,
+              style: TextStyle(color: messageTextColor, fontSize: 14),
+              textAlign: TextAlign.start,
             )
           : null,
+      icon: icon != null ? Icon(icon, color: iconColor) : null,
+      shouldIconPulse: false,
       padding: padding,
       margin: margin,
       isDismissible: dismissible,

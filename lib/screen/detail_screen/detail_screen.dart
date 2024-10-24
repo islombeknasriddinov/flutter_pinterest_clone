@@ -81,7 +81,7 @@ class DetailScreen extends MyScreen<DetailScreenViewModel, DetailScreenView>
           relatedPhotoId: arg.photoHome.id,
           physics: const NeverScrollableScrollPhysics(),
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
-        ),
+        ).build(),
       ],
     );
   }

@@ -26,12 +26,14 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
   void onCreate() {
     super.onCreate();
 
-/*    subscription = Connectivity().onConnectivityChanged.listen((result) {
+    print("@@@ onCreate ${_list.hashCode}");
+
+    subscription = Connectivity().onConnectivityChanged.listen((result) {
       if ((result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) &&
           _list.isEmpty) {
         _apiPhotoList(_page);
       }
-    });*/
+    });
 
     initData();
   }
@@ -113,6 +115,8 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
   @override
   void onDestroy() {
     subscription?.cancel();
+
+    print("@@@ onDestroy bloc");
     super.onDestroy();
   }
 }

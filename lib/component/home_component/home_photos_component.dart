@@ -88,7 +88,20 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
   }
 
   @override
+  void viewModelListener() {
+    super.viewModelListener();
+
+    if (viewModel?.items.isNotEmpty == true) {
+      setCircularBottomIndicator(true);
+    } else {
+      setCircularBottomIndicator(false);
+    }
+  }
+
+  @override
   void onDestroy() {
+    print("@@@ onDestroy widget");
+
     controller.removeListener(paginationListener);
     controller.dispose();
     super.onDestroy();
@@ -125,16 +138,7 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
           photoHome: photoHome,
           screenWidth: screenSize.width,
           onTapItem: onTapItem,
-          onTapMore: (_) {
-            /*MySnackBar.showMess(
-              getContext(),
-              message: "RTesthfjsdjfsjf gs sjfgjsdf s",
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              borderWidth: 1,
-              backgroundColor: Colors.white,
-            );*/
-          },
+          onTapMore: (_) {},
         );
       },
     );

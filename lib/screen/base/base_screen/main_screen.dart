@@ -39,7 +39,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
           position: () => viewModel?.position ?? 0,
           scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
-        ),
+        ).build(),
         Container(),
         Container(),
         Container(),
@@ -58,7 +58,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
             height: kToolbarHeight,
             margin: const EdgeInsets.only(right: 65, left: 65, bottom: 35),
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
               child: CupertinoTabBar(
                 currentIndex: viewModel!.currentIndex,
                 items: getBottomNavigationBarItems(),

@@ -31,11 +31,7 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
 
   @override
   PreferredSizeWidget? buildAppBarWidget(BuildContext context) {
-    return AppBar(
-      backgroundColor: const Color.fromARGB(255, 223, 26, 37),
-      primary: false,
-      elevation: 0,
-    );
+    return AppBar(backgroundColor: color.red, primary: false, elevation: 0);
   }
 
   @override
@@ -45,7 +41,7 @@ class SplashScreen extends MyScreen<SplashScreenViewModel, SplashScreenView>
         child: Container(
           width: double.maxFinite,
           height: double.maxFinite,
-          color: const Color.fromARGB(255, 223, 26, 37),
+          color: color.red,
           child: Lottie.asset(
             AssetManager.splashScreenAnim,
             controller: controller,

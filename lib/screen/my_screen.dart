@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/snack_bar.dart';
+import 'package:flutter_pinterestclone/main.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -26,6 +27,8 @@ abstract class MyScreen<Vm extends MyViewModel, V extends View> extends MyState 
   Vm? get viewModel => _viewModel;
 
   MyViewModel? get myViewModel => _viewModel;
+
+  PinterestAppColor get color => PinterestAppColor.instance;
 
   T? getArgument<T extends MyArgument>() {
     final myArgument = (ModalRoute.of(getContext())?.settings.arguments as MyArgument);

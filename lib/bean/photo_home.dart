@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 class PhotoHome {
   static List<PhotoHome> photoHomeListFromJson(String str) {
@@ -28,6 +29,7 @@ class PhotoHome {
   Sponsorship? sponsorship;
   TopicSubmissions? topicSubmissions;
   User? user;
+  String? heroTag;
 
   PhotoHome({
     required this.id,
@@ -49,7 +51,22 @@ class PhotoHome {
     this.sponsorship,
     this.topicSubmissions,
     this.user,
+    this.heroTag,
   });
+
+  Size getWidgetSize(double screenWidth, {int crossAxisCount = 1}) {
+    double imageWidth = width!.toDouble();
+    double imageHeight = height!.toDouble() / crossAxisCount;
+
+    double aspectRatio = imageWidth / imageHeight;
+
+    double scalingFactor = screenWidth / imageWidth;
+
+    double widgetWidth = imageWidth * scalingFactor;
+    double widgetHeight = widgetWidth / aspectRatio;
+
+    return Size(widgetWidth, widgetHeight);
+  }
 
   factory PhotoHome.fromJson(Map<String, dynamic> json) {
     List categories = [];
@@ -90,6 +107,7 @@ class PhotoHome {
           ? TopicSubmissions.fromJson(json['topic_submissions'])
           : null,
       user: json['user'] != null ? User.fromJson(json['user']) : null,
+      heroTag: DateTime.now().microsecondsSinceEpoch.toString(),
     );
   }
 }

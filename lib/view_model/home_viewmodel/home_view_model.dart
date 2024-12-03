@@ -25,9 +25,6 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
   @override
   void onCreate() {
     super.onCreate();
-
-    print("@@@ onCreate ${_list.hashCode}");
-
     subscription = Connectivity().onConnectivityChanged.listen((result) {
       if ((result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) &&
           _list.isEmpty) {
@@ -115,8 +112,6 @@ class HomePhotosComponentViewModelImpl extends MyViewModelImpl<HomePhotosCompone
   @override
   void onDestroy() {
     subscription?.cancel();
-
-    print("@@@ onDestroy bloc");
     super.onDestroy();
   }
 }

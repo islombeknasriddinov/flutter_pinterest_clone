@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
 
 class MyStateBuilder extends StatefulWidget {
-  final String? routeName;
   final OnBuildMyState state;
 
-  MyStateBuilder._(this.routeName, this.state);
-
-  factory MyStateBuilder.screen(String routeName, OnBuildMyState screen) =>
-      MyStateBuilder._(routeName, screen);
-
-  factory MyStateBuilder.component(OnBuildMyState component) => MyStateBuilder._(null, component);
+  MyStateBuilder.build(this.state, {super.key});
 
   @override
   State<MyStateBuilder> createState() => _MyStateBuilderState();
@@ -27,9 +20,6 @@ class _MyStateBuilderState extends State<MyStateBuilder>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     state = widget.state.call();
-    if (widget.routeName != null) {
-      Logger.p("OpenedScreen: ${widget.routeName}\n");
-    }
 
     state.setVsync(this);
   }

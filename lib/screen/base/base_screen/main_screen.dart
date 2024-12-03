@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pinterestclone/common/extention.dart';
 import 'package:flutter_pinterestclone/common/screen_manager.dart';
 import 'package:flutter_pinterestclone/component/home_component/home_photos_component.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
@@ -39,7 +40,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
           position: () => viewModel?.position ?? 0,
           scrollOffset: (offset) => viewModel?.setScrollOffset(offset),
           onTapItem: (item) => DetailScreen.open(getContext(), ArgDetailScreen(item)),
-        ).build(),
+        ),
         Container(),
         Container(),
         Container(),
@@ -57,6 +58,7 @@ class MainScreen extends MyScreen<MainScreenViewModel, MainScreenView> implement
           child: Container(
             height: kToolbarHeight,
             margin: const EdgeInsets.only(right: 65, left: 65, bottom: 35),
+            constraints: const BoxConstraints(maxWidth: 400),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               child: CupertinoTabBar(

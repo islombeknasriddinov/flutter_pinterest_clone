@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/common/snack_bar.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
-import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
 import 'package:flutter_pinterestclone/view_model/view_model.dart';
@@ -48,6 +47,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MySta
 
   @override
   void onCreate() {
+    super.onCreate();
     if (_viewModel == null) {
       _viewModel = ViewModelProvider.of(this).get(V) as Vm?;
       _viewModel?.onCreate();
@@ -63,6 +63,7 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MySta
 
   @override
   void didUpdateWidgets(covariant MyComponent oldWidget) {
+    super.didUpdateWidgets(oldWidget);
     this._context = oldWidget._context;
     this._viewModel = oldWidget._viewModel as Vm?;
     this._refreshable = oldWidget._refreshable;
@@ -72,16 +73,16 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MySta
 
   @override
   void initListeners() {
+    super.initListeners();
     viewModel?.initListeners();
   }
 
   @override
   void onDestroy() {
+    super.onDestroy();
     viewModel?.removeListener(viewModelListener);
     viewModel?.onDestroy();
   }
-
-  Widget build() => MyStateBuilder.component(() => this);
 
   @override
   Widget onBuildWidget(BuildContext context) {
@@ -91,11 +92,11 @@ abstract class MyComponent<Vm extends MyViewModel, V extends View> extends MySta
         Widget bodyWidget = onBuildBodyWidget(context);
 
         if (_refreshable == true) {
-            bodyWidget = RefreshIndicator(
-              onRefresh: onRefresh,
-              child: bodyWidget,
-            );
-          }
+          bodyWidget = RefreshIndicator(
+            onRefresh: onRefresh,
+            child: bodyWidget,
+          );
+        }
 
         return Stack(
           children: [

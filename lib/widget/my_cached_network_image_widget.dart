@@ -1,21 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/my_state.dart';
-import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/base/state_builder/viewmodel_builder.dart';
 
 class MyCachedNetworkImageWidget extends MyState {
   final String imageUrl;
-  final Size? size;
+  final double? width;
+  final double? height;
   final String? heroTag;
+  final bool zoomEnabled;
   final BoxFit? imageFit;
   final BorderRadius? borderRadius;
   final Widget Function(BuildContext context, String url)? imagePlaceHolder;
   final VoidCallback? onTapImage;
 
-  MyCachedNetworkImageWidget(this.imageUrl, {
-    this.size,
+  MyCachedNetworkImageWidget(
+    this.imageUrl, {
+    this.height,
+    this.width,
     this.heroTag,
+    this.zoomEnabled = false,
     this.imageFit,
     this.borderRadius,
     this.imagePlaceHolder,
@@ -23,10 +27,6 @@ class MyCachedNetworkImageWidget extends MyState {
   });
 
   late MyCachedNetworkImageViewModel viewModel;
-
-  Widget build() {
-    return MyStateBuilder.component(() => this);
-  }
 
   @override
   void onCreate() {
@@ -38,25 +38,30 @@ class MyCachedNetworkImageWidget extends MyState {
 
   @override
   Widget onBuildWidget(BuildContext context) {
-    Widget child = InteractiveViewer(
-      transformationController: viewModel.transformationController,
-      child: CachedNetworkImage(
-        width: size?.width.round().toDouble(),
-        height: size?.height.round().toDouble(),
-        imageUrl: imageUrl,
-        fit: imageFit,
-        placeholder: imagePlaceHolder,
-        errorWidget: (_, __, ___) {
-          final widget = imagePlaceHolder?.call(context, __);
+    Widget child = CachedNetworkImage(
+      width: width,
+      height: height,
+      imageUrl: imageUrl,
+      fit: imageFit,
+      placeholder: imagePlaceHolder,
+      errorWidget: (_, __, ___) {
+        final widget = imagePlaceHolder?.call(context, __);
 
-          if (widget != null) {
-            return widget;
-          }
+        if (widget != null) {
+          return widget;
+        }
 
-          return Container();
-        },
-      ),
+        return Container();
+      },
     );
+
+    if (zoomEnabled) {
+      child = InteractiveViewer(
+        transformationController: viewModel.transformationController,
+        minScale: 1,
+        child: child,
+      );
+    }
 
     if (borderRadius != null) {
       child = ClipRRect(

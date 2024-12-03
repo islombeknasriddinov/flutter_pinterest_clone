@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
+import 'package:flutter_pinterestclone/common/extention.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/component/my_component.dart';
 import 'package:flutter_pinterestclone/screen/view.dart';
@@ -25,7 +26,7 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
     this.physics,
   });
 
-  factory HomePhotosComponent.main({
+  static Widget main({
     double Function()? position,
     OnTapPhotoItem? onTapItem,
     VoidCallback? didEndScrollPosition,
@@ -38,10 +39,10 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       didEndScrollPosition: didEndScrollPosition,
       scrollOffset: scrollOffset,
       physics: physics,
-    );
+    ).build();
   }
 
-  factory HomePhotosComponent.related({
+  static Widget related({
     required String relatedPhotoId,
     double Function()? position,
     OnTapPhotoItem? onTapItem,
@@ -56,7 +57,7 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       didEndScrollPosition: didEndScrollPosition,
       scrollOffset: scrollOffset,
       physics: physics,
-    );
+    ).build();
   }
 
   @override
@@ -100,8 +101,6 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
 
   @override
   void onDestroy() {
-    print("@@@ onDestroy widget");
-
     controller.removeListener(paginationListener);
     controller.dispose();
     super.onDestroy();
@@ -120,13 +119,16 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
 
   @override
   Widget onBuildBodyWidget(BuildContext context) {
-    final screenSize = MediaQuery.of(getContext()).size;
+    final screenSize = context.getScreenSize();
+    final isTablet = context.isDeviceTablet();
+    final crossAxisCount = isTablet ? 4 : 2;
 
     return MyGridListView(
       controller: controller,
       padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
       crossAxisSpacing: 8,
       mainAxisSpacing: 5,
+      crossAxisCount: crossAxisCount,
       itemCount: viewModel!.items.length,
       physics: physics,
       shrinkWrap: true,
@@ -134,9 +136,15 @@ class HomePhotosComponent extends MyComponent<HomePhotosComponentViewModel, Home
       itemBuilder: (ctx, index) {
         PhotoHome photoHome = viewModel!.items[index];
 
+        if (photoHome.width == null || photoHome.height == null) return Container();
+
+        final widgetSize =
+            photoHome.getWidgetSize(screenSize.width, crossAxisCount: crossAxisCount);
+
         return PhotoItemWidget(
           photoHome: photoHome,
-          screenWidth: screenSize.width,
+          width: widgetSize.width,
+          height: widgetSize.height,
           onTapItem: onTapItem,
           onTapMore: (_) {},
         );

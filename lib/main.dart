@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pinterestclone/common/typedef.dart';
+import 'package:flutter_pinterestclone/common/extention.dart';
+import 'package:flutter_pinterestclone/common/log.dart';
 import 'package:flutter_pinterestclone/screen/base/base_screen/main_screen.dart';
-import 'package:flutter_pinterestclone/screen/base/state_builder/state_builder.dart';
 import 'package:flutter_pinterestclone/screen/detail_screen/detail_screen.dart';
+import 'package:flutter_pinterestclone/screen/my_screen.dart';
 import 'package:flutter_pinterestclone/screen/search_screen/search_screen.dart';
 import 'package:flutter_pinterestclone/screen/splash_screen/splash_screen.dart';
 import 'package:flutter_pinterestclone/view_model/view_model_provider.dart';
@@ -16,7 +17,9 @@ void main() {
 class PinterestAppTheme {}
 
 class PinterestAppColor {
-  static final PinterestAppColor instance = PinterestAppColor._();
+  static final PinterestAppColor _instance = PinterestAppColor._();
+
+  static PinterestAppColor get instance => _instance;
 
   PinterestAppColor._();
 
@@ -48,14 +51,17 @@ class MyPinterestApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> getRoutes() {
     return {
-      SplashScreen.ROUTE_NAME: screenBuilder(SplashScreen.ROUTE_NAME, () => SplashScreen()),
-      MainScreen.ROUTE_NAME: screenBuilder(MainScreen.ROUTE_NAME, () => MainScreen()),
-      SearchScreen.ROUTE_NAME: screenBuilder(SearchScreen.ROUTE_NAME, () => SearchScreen()),
-      DetailScreen.ROUTE_NAME: screenBuilder(DetailScreen.ROUTE_NAME, () => DetailScreen()),
+      SplashScreen.ROUTE_NAME: screenBuilder(SplashScreen.ROUTE_NAME, SplashScreen()),
+      MainScreen.ROUTE_NAME: screenBuilder(MainScreen.ROUTE_NAME, MainScreen()),
+      SearchScreen.ROUTE_NAME: screenBuilder(SearchScreen.ROUTE_NAME, SearchScreen()),
+      DetailScreen.ROUTE_NAME: screenBuilder(DetailScreen.ROUTE_NAME, DetailScreen()),
     };
   }
 
-  WidgetBuilder screenBuilder(String routeName, OnBuildMyState onBuildScreen) {
-    return (_) => MyStateBuilder.screen(routeName, onBuildScreen);
+  WidgetBuilder screenBuilder(String routeName, MyScreen screen) {
+    return (_) {
+      Logger.p("OpenedScreen: $routeName\n");
+      return screen.build();
+    };
   }
 }

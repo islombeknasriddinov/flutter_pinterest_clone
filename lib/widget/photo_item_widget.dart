@@ -1,65 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pinterestclone/bean/photo_home.dart';
 import 'package:flutter_pinterestclone/common/color_util.dart';
+import 'package:flutter_pinterestclone/common/extention.dart';
 import 'package:flutter_pinterestclone/common/typedef.dart';
 import 'package:flutter_pinterestclone/widget/my_cached_network_image_widget.dart';
 
 class PhotoItemWidget extends StatelessWidget {
-  PhotoHome photoHome;
-  double screenWidth;
-  OnTapPhotoItem? onTapItem;
-  OnTapPhotoItem? onTapMore;
+  final PhotoHome photoHome;
+  final double? width;
+  final double? height;
+  final OnTapPhotoItem? onTapItem;
+  final OnTapPhotoItem? onTapMore;
 
   PhotoItemWidget({
     Key? key,
     required this.photoHome,
-    required this.screenWidth,
+    this.height,
+    this.width,
     this.onTapItem,
     this.onTapMore,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double imageWidth = photoHome.width!.toDouble();
-    double imageHeight = photoHome.height!.toDouble() / 2;
-
-    double aspectRatio = imageWidth / imageHeight;
-
-    double scalingFactor = screenWidth / imageWidth;
-
-    double widgetWidth = imageWidth * scalingFactor;
-    double widgetHeight = widgetWidth / aspectRatio;
-
-    return Stack(
-      children: [
-        Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _buildPhotoWidget(Size(widgetWidth, widgetHeight)),
-              const SizedBox(height: 10),
-              _buildInfosWidget(),
-            ],
-          ),
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildPhotoWidget(),
+          const SizedBox(height: 10),
+          _buildInfosWidget(),
+        ],
+      ),
     );
   }
 
-  Widget _buildPhotoWidget(Size size) {
+  Widget _buildPhotoWidget() {
     return MyCachedNetworkImageWidget(
-      photoHome.urls?.smallS3 ?? photoHome.urls?.regular ?? "",
-      heroTag: photoHome.id,
-      size: size,
+      photoHome.urls?.smallS3 ?? photoHome.urls?.small ?? "",
+      heroTag: photoHome.heroTag,
+      height: height,
+      width: width,
       imageFit: BoxFit.cover,
       borderRadius: BorderRadius.circular(18.0),
       imagePlaceHolder: (context, url) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(18.0),
           child: Container(
-            width: size.width,
-            height: size.height,
+            width: width,
+            height: height,
             color: ColorUtil.hexToColor(photoHome.color ?? Colors.grey.value.toString()),
           ),
         );
